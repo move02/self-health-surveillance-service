@@ -6,16 +6,17 @@ before_script:
 
 stages:
     - test
+    # - deploy
 
 test:
   script:
     - python -m unittest -v test
 
 
-staging:
-    stage: deploy
-    script:
-        - apt-get update -qy
-        - apt-get install -y ruby-dev
-        - gem install dpl
-        - dpl --provider=heroku --app=flask-test
+# staging:
+#     stage: deploy
+#     script:
+#         - apt-get update -qy
+#         - apt-get install -y ruby-dev
+#         - gem install dpl
+#         - dpl --provider=heroku --app=flask-test
