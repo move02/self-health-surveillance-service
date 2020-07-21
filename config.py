@@ -23,7 +23,8 @@ class ProductConfig(Config):
     pass
 
 class TestConfig(Config):
-    pass
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = f"sqlite:////temp/test.db"
 
 class DevelopConfig(Config):
     SQLALCHEMY_DATABASE_URI = f"sqlite:////temp/test.db"

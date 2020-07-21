@@ -42,10 +42,12 @@ def create_app(config_class=Config):
     return app
 
 
-if os.environ.get("CURRENT_ENV") == "Develop":
-    app = create_app(DevelopConfig)
-else:
-    app = create_app(Config)
+app = create_app(DevelopConfig)
+
+# if os.environ.get("CURRENT_ENV") == "Develop":
+#     app = create_app(DevelopConfig)
+# else:
+#     app = create_app(Config)
 
 from myapp.models.mymodel import *
 from myapp import views

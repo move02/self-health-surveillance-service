@@ -2,12 +2,7 @@ from datetime import datetime, timedelta
 import unittest
 from myapp import create_app, db
 from myapp.models import mymodel
-from config import Config
-
-
-class TestConfig(Config):
-    TESTING = True
-    # SQLALCHEMY_DATABASE_URI = 'sqlite://'
+from config import Config, TestConfig
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):

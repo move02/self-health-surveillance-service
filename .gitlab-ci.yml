@@ -19,4 +19,6 @@ test:
 #         - apt-get update -qy
 #         - apt-get install -y ruby-dev
 #         - gem install dpl
-#         - dpl --provider=heroku --app=flask-test
+#         - dpl --provider=heroku --app=move02-flask-test --api-key=
+    # only:
+    #     - master

@@ -1,2 +1,0 @@
-recursive-include myapp/templates *
-recursive-include myapp/statics *
