@@ -5,7 +5,11 @@ import os
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
-from config import Config
+from config import Config, DevelopConfig
+from dotenv import load_dotenv
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -37,7 +41,11 @@ def create_app(config_class=Config):
 
     return app
 
-app = create_app(Config)
+
+if os.environ.get("CURRENT_ENV") == "Develop":
+    app = create_app(DevelopConfig)
+else:
+    app = create_app(Config)
 
 from myapp.models.mymodel import *
 from myapp import views
