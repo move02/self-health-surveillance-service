@@ -9,7 +9,7 @@ stages:
 
 test:
   script:
-    - python -m ./test.py
+    - python -m unittest -v test
 
 ## production:
 ##    stage: deploy
