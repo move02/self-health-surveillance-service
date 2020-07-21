@@ -18,6 +18,7 @@ class UserModelCase(unittest.TestCase):
 
     def test_method(self):
         # 단위 테스트 작성
+        mymodel.MyModel.query.all()
         pass
 
 if __name__ == '__main__':
