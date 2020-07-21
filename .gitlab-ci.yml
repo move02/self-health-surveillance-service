@@ -5,9 +5,9 @@ before_script:
     - pip install -r requirements.txt
 
 stages:
-    - unittest
+    - test
 
-unittest:
+test:
   script:
     - python -m unittest discover tests
 
