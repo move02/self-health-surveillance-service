@@ -1,10 +1,10 @@
 from datetime import datetime
-from flask import Flask, jsonify, redirect
+from flask import Flask, jsonify, redirect, render_template
 from myapp import app
 
 @app.route("/")
-def red():
-    return redirect("http://127.0.0.1:5000/index.html")
+def index():
+    return render_template("index.html")
 
 @app.route("/hello")
 def hello():

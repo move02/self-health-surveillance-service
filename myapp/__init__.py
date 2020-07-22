@@ -42,7 +42,7 @@ def create_app(config_class=Config):
     return app
 
 
-app = create_app(DevelopConfig)
+app = create_app(HerokuDevelopConfig)
 
 # if os.environ.get("CURRENT_ENV") == "Develop":
 #     app = create_app(DevelopConfig)

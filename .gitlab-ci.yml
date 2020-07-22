@@ -5,12 +5,36 @@ before_script:
     - pip install -r requirements.txt
 
 stages:
-    - test
-    # - deploy
+    - init
+    - tests
+    - deploy
 
-test:
-  script:
-    - python -m unittest -v test
+init:
+    stage: init
+    script:
+        - apk add postgresql-dev --no-cache
+        - pip install psycopg2-binary
+        - pip install -r requirements
+
+run_tests:
+    stage: tests
+    script:
+        - apk add postgresql-dev --no-cache
+        - pip install psycopg2-binary
+        - pip install -r requirements.txt
+        - python tests.py
+
+deploy_staging:
+    stage: deploy
+    script:
+        - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/move02-flask-test.git
+        - git push heroku master
+        - echo "Deployed to Staging Server https://move02-flask-test.herokuapp.com"
+    environment:
+        name: staging
+        url: https://move02-flask-test.herokuapp.com/
+    only:
+        - master
 
 
 # staging:
