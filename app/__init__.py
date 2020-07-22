@@ -67,7 +67,8 @@ from app import views
 
 with app.app_context():
     db.init_app(app)
-    if len(MyModel.query.all()) == 0 and (current_env != "Test" or current_env != "Product"):
+    if len(MyModel.query.all()) == 0 and current_env != "Product":
+        db.create_all()
         with open("seeds.json", "r") as seed_file:
             seed_data = json.load(seed_file)
             for obj in seed_data["datas"]:
