@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import unittest
-from myapp import create_app, db
-from myapp.models import mymodel
+from app import create_app, db
+from app.models import mymodel
 from config import *
 from dotenv import load_dotenv
 
@@ -25,7 +25,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_method(self):
         # 단위 테스트 작성
-        mymodel.MyModel.query.all()
+        assert len(mymodel.MyModel.query.all()) >= 0
+    
+    def test_select_first(self):
+        # 단위 테스트 작성
+        assert mymodel.MyModel.query.first().username == "move02"
         pass
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import json
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app, url_for
-from myapp import db
+from app import db
 
 class MyModel(db.Model):
     __tablename__="mytable"

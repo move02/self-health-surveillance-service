@@ -1,4 +1,4 @@
-# myapp 시작 시
+# app 시작 시
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -31,7 +31,7 @@ def create_app(config_class=Config):
         else:   
             if not os.path.exists('logs'):
                 os.mkdir('logs')
-            file_handler = RotatingFileHandler('logs/myapp.log', maxBytes=10240, backupCount=10)
+            file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
             file_handler.setFormatter(logging.Formatter(
                 '%(asctime)s %(levelname)s: %(message)s '
                 '[in %(pathname)s:%(lineno)d]'))
@@ -60,5 +60,5 @@ elif current_env == "Product":
 else:
     app = create_app(HerokuDevelopConfig)
 
-from myapp.models.mymodel import *
-from myapp import views
+from app.models.mymodel import *
+from app import views

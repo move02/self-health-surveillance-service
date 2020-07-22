@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template
-from myapp import app
+from app import app
 
 @app.route("/")
 def index():
