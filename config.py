@@ -23,10 +23,10 @@ class ProductConfig(Config):
 
 class TestConfig(Config):
     TESTING = True
-    # SQLALCHEMY_DATABASE_URI = f"sqlite:///test.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
 
 class LocalDevelopConfig(Config):
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///dev.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///dev.db"
     pass
 
 class HerokuDevelopConfig(Config):
