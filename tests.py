@@ -15,9 +15,9 @@ class MyTestCase(unittest.TestCase):
         elif os.environ.get("CURRENT_ENV") == "LocalDevelop":
             self.app = create_app(LocalDevelopConfig)
         elif os.environ.get("CURRENT_ENV") == "RemoteDevelop":
-            self.app = create_app(RemoteDevelopConfig)
+            self.app = create_app(HerokuDevelopConfig)
         else:
-            self.app = create_app(RemoteDevelopConfig)
+            self.app = create_app(HerokuDevelopConfig)
 
         self.app_context = self.app.app_context()
         self.app_context.push()
