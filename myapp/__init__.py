@@ -5,7 +5,7 @@ import os
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
-from config import Config, DevelopConfig
+from config import *
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
