@@ -1,8 +1,3 @@
-image: docker
-
-before_script:
-    - pip install -r requirements.txt
-
 stages:
     - init
     - tests
@@ -11,23 +6,23 @@ stages:
 init:
     stage: init
     script:
-        - apk add postgresql-dev --no-cache
-        - pip install psycopg2-binary
-        - pip install -r requirements
+        - export DATABASE_URL=$HEROKU_POSTGRES_URI
+        - apt-get update -qy
+        - apt-get install -y python-dev python-pip
+        - pip install -r requirements.txt
 
 run_tests:
     stage: tests
     script:
-        - apk add postgresql-dev --no-cache
-        - pip install psycopg2-binary
-        - pip install -r requirements.txt
         - python tests.py
 
 deploy_staging:
     stage: deploy
     script:
-        - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/move02-flask-test.git
-        - git push heroku master
+        - apt-get update -qy
+        - apt-get install -y ruby-dev
+        - gem install dpl
+        - dpl --provider=heroku --app=move02-flask-test --api-key=$HEROKU_SECRET_KEY
         - echo "Deployed to Staging Server https://move02-flask-test.herokuapp.com"
     environment:
         name: staging
