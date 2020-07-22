@@ -8,7 +8,7 @@ init:
     script:
         - export DATABASE_URL=$HEROKU_POSTGRES_URI
         - apt-get update -qy
-        - apt-get install -y python-dev python-pip
+        - apt-get install -y python3-dev python3-pip
         - pip install -r requirements.txt
 
 run_tests:
