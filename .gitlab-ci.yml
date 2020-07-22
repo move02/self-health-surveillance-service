@@ -9,12 +9,12 @@ init:
         - export DATABASE_URL=$HEROKU_POSTGRES_URI
         - apt-get update -qy
         - apt-get install -y python3-dev python3-pip
-        - pip install -r requirements.txt
+        - pip3 install -r requirements.txt
 
 run_tests:
     stage: tests
     script:
-        - python tests.py
+        - python3 tests.py
 
 deploy_staging:
     stage: deploy
