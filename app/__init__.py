@@ -59,7 +59,8 @@ elif current_env == "Product":
 
 ## .env 를 볼 수 없는 상황
 else:
-    app = create_app(HerokuDevelopConfig)
+    # app = create_app(HerokuDevelopConfig)
+    raise EnvironmentError
 
 from app.models.mymodel import *
 from app import views

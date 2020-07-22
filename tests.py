@@ -17,7 +17,7 @@ class MyTestCase(unittest.TestCase):
         elif os.environ.get("CURRENT_ENV") == "HerokuDevelop":
             self.app = create_app(HerokuDevelopConfig)
         else:
-            self.app = create_app(HerokuDevelopConfig)
+            raise EnvironmentError
 
         self.app_context = self.app.app_context()
         self.app_context.push()
