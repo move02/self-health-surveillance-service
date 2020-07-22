@@ -23,7 +23,7 @@ class ProductConfig(Config):
 
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("HEROKU_POSTGRES_URI")
 
 class LocalDevelopConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:///dev.db"
