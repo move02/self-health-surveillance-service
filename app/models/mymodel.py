@@ -24,7 +24,7 @@ class MyModel(db.Model):
         self.set_password(password)
     
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {} / mail : {}>'.format(self.username, self.email)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

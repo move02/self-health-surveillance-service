@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template
 from app import app
+from app.models.mymodel import MyModel
 
 @app.route("/")
 def index():
@@ -8,8 +9,9 @@ def index():
 
 @app.route("/hello")
 def hello():
-    json_resp = jsonify(
+    sample = MyModel.query.first()
+    return jsonify(
         status=200,
-        msg="Hello world"
+        msg="Hello world",
+        sample=sample
     )
-    return json_resp

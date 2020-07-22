@@ -8,6 +8,7 @@ from flask_migrate import Migrate, MigrateCommand
 from config import *
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
+import json
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -62,3 +63,13 @@ else:
 
 from app.models.mymodel import *
 from app import views
+
+with app.app_context():
+    db.init_app(app)
+    if len(MyModel.query.all()) == 0 and (current_env != "Test" or current_env != "Product"):
+        with open("seeds.json", "r") as seed_file:
+            seed_data = json.load(seed_file)
+            for obj in seed_data["datas"]:
+                sample = MyModel(username=obj["username"], email=obj["email"], password=str(obj["password"]))
+                db.session.add(sample)
+            db.session.commit()

@@ -27,10 +27,10 @@ class MyTestCase(unittest.TestCase):
         # 단위 테스트 작성
         assert len(mymodel.MyModel.query.all()) >= 0
     
-    def test_select_first(self):
+    def test_solve_hash(self):
         # 단위 테스트 작성
-        assert mymodel.MyModel.query.first().username == "move02"
-        pass
+        sample = mymodel.MyModel.query.first()
+        self.assertTrue(sample.check_password("1234"))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
