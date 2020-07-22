@@ -228,3 +228,4 @@ pip-selfcheck.json
 __pycache__
 */__pycache__
 .env
+*.db

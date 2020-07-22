@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from config import *
 from dotenv import load_dotenv
+from flask_cors import CORS, cross_origin
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -20,6 +21,7 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     migrate.init_app(app, db)
+    CORS(app, resources={r'*': {'origins': 'http://localhost:5000'}})
 
     if not app.debug and not app.testing:
         if app.config['LOG_TO_STDOUT']:
@@ -42,12 +44,21 @@ def create_app(config_class=Config):
     return app
 
 
-app = create_app(HerokuDevelopConfig)
+app = None
+current_env = os.environ.get("CURRENT_ENV")
 
-# if os.environ.get("CURRENT_ENV") == "Develop":
-#     app = create_app(DevelopConfig)
-# else:
-#     app = create_app(Config)
+if current_env == "LocalDevelop":
+    app = create_app(LocalDevelopConfig)
+elif current_env == "HerokuDevelop":
+    app = create_app(HerokuDevelopConfig)
+elif current_env == "Test":
+    app = create_app(TestConfig)
+elif current_env == "Product":
+    app = create_app(ProductConfig)
+
+## .env 를 볼 수 없는 상황
+else:
+    app = create_app(HerokuDevelopConfig)
 
 from myapp.models.mymodel import *
 from myapp import views
