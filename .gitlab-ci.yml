@@ -29,7 +29,6 @@ deploy_staging:
         - gem install dpl
         - dpl --provider=heroku --app=move02-flask-test --api-key=$HEROKU_SECRET_KEY
         - echo "Deployed to Staging Server https://move02-flask-test.herokuapp.com"
-        - flask db upgrade
     environment:
         name: staging
         url: https://move02-flask-test.herokuapp.com/
