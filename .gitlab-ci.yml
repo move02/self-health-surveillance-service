@@ -24,6 +24,7 @@ run_tests:
 deploy_staging:
     stage: deploy
     script:
+        - export DATABASE_URL=$HEROKU_POSTGRES_URI
         - apt-get update -qy
         - apt-get install -y ruby-dev
         - gem install dpl
