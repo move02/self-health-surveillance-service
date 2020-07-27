@@ -16,6 +16,7 @@ def init_db():
     db.drop_all()
     db.create_all()
     create_users()
+    seeding()
 
 
 def create_users():
