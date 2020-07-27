@@ -1,8 +1,9 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template
 from app import app
-from app.models.mymodel import MyModel
+from app.models.mymodel import Administrators
 from flask_user import login_required, roles_required, current_user, UserManager, UserMixin
+import pdb
 
 @app.route("/")
 def index():
@@ -11,7 +12,8 @@ def index():
 
 @app.route("/hello")
 def hello():
-    sample = MyModel.query.first()
+    sample = Administrators.query.first()
+
     return jsonify(
         status=200,
         msg="Hello world",

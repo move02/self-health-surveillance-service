@@ -4,6 +4,7 @@ from app import create_app, db
 from app.models import mymodel
 from config import *
 from dotenv import load_dotenv
+from app.command import db_init
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -23,7 +24,7 @@ class MyTestCase(unittest.TestCase):
 
         self.app_context = self.app.app_context()
         self.app_context.push()
-        # db.create_all()
+        db_init.init_db()
 
     def test_method(self):
         self.assertGreater(len(mymodel.Administrators.query.all()), 0)
@@ -35,7 +36,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(sample.check_password("1234"))
 
     def test_roles(self):
-        sample = mymodel.Administrators.query.filter(usernmae="move02")
+        sample = mymodel.Administrators.query.first()
         self.assertIsNotNone(sample)
         print(sample.roles)
 

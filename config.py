@@ -33,7 +33,7 @@ class ProductConfig(Config):
 
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get("TINY_DATABASE_URI")
+    SQLALCHEMY_DATABASE_URI = "sqlite:///dev.db"
 
 class LocalDevelopConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:///dev.db"
