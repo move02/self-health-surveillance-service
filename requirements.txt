@@ -4,6 +4,8 @@ blinker==1.4
 cffi==1.14.1
 click==7.1.2
 cryptography==3.0
+dnspython==2.0.0
+email-validator==1.1.1
 flake8==3.8.3
 Flask==1.1.2
 Flask-Cors==3.0.8
@@ -15,6 +17,7 @@ Flask-SQLAlchemy==2.4.4
 Flask-User==1.0.2.2
 Flask-WTF==0.14.3
 gunicorn==20.0.4
+idna==2.10
 importlib-metadata==1.7.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
@@ -24,6 +27,7 @@ mccabe==0.6.1
 mysql==0.0.2
 mysql-connector-python==8.0.21
 mysqlclient==2.0.1
+object-detection==0.1
 passlib==1.7.2
 protobuf==3.12.2
 psycopg2==2.8.5

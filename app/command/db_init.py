@@ -24,7 +24,7 @@ def create_users():
 
     admin_role = find_or_create_role('SysAdmin')
 
-    user = find_or_create_user(u'move02', u'move02', u'move02@daumsoft.com', '1234', admin_role)
+    user = find_or_create_user(u'move02', u'move02@daumsoft.com', '1234', u'move02', admin_role)
 
     db.session.commit()
 
@@ -37,13 +37,13 @@ def find_or_create_role(name):
     return role
 
 
-def find_or_create_user(username, realname, email, password, role=None):
-    user = Administrators.query.filter(Administrators.username == username).first()
+def find_or_create_user(username, email, password, realname, role=None):
+    user = Administrator.query.filter(Administrator.username == username).first()
     if not user:
-        user = Administrators(username=username,
-                    realname=realname,
+        user = Administrator(username=username,
                     email=email,
                     password=password,
+                    realname=realname,
                     active=True,
                     email_confirmed_at=datetime.utcnow())
 
@@ -58,11 +58,18 @@ def seeding():
     from dotenv import load_dotenv
     
     current_env = os.environ.get("CURRENT_ENV")
-    with app.app_context():
-        if len(Administrators.query.all()) < 2 and current_env != "Product":
-            with open("../seeds.json", "r") as seed_file:
+    with current_app.app_context():
+        if len(Administrator.query.all()) < 2 and current_env != "Product":
+            with open("seeds.json", "r") as seed_file:
                 seed_data = json.load(seed_file)
                 for obj in seed_data["datas"]:
-                    sample = Administrators(username=obj["username"], email=obj["email"], password=str(obj["password"]))
+                    sample = Administrator(username=obj["username"], email=obj["email"], password=str(obj["password"]))
                     db.session.add(sample)
                 db.session.commit()
+
+        if len(Region.query.all()) == 0 and current_env != "Product":
+            region_names = ["서울", "인천", "대전", "대구", "광주", "부산", "울산", "경기", "강원", "충북", "충남", "경북", "경남", "전북", "전남", "제주"]
+            for rn in region_names:
+                new_region = Region(rn)
+                db.session.add(new_region)
+            db.session.commit()

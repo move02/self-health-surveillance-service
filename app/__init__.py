@@ -82,4 +82,4 @@ with app.app_context():
     db.init_app(app)
     db_init.init_db()
 
-user_manager = UserManager(app, db, Administrators)
+user_manager = UserManager(app, db, Administrator)

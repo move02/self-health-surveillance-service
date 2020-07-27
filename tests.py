@@ -27,16 +27,16 @@ class MyTestCase(unittest.TestCase):
         db_init.init_db()
 
     def test_method(self):
-        self.assertGreater(len(mymodel.Administrators.query.all()), 0)
+        self.assertGreater(len(mymodel.Administrator.query.all()), 0)
         pass
     
     def test_solve_hash(self):
         # sample = mymodel.MyModel(username="move02", email="asdf@asdf.com", password="1234")
-        sample = mymodel.Administrators.query.first()
+        sample = mymodel.Administrator.query.first()
         self.assertTrue(sample.check_password("1234"))
 
     def test_roles(self):
-        sample = mymodel.Administrators.query.first()
+        sample = mymodel.Administrator.query.first()
         self.assertIsNotNone(sample)
         print(sample.roles)
 
