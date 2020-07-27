@@ -4,8 +4,9 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app, url_for
 from app import db
+from sqlalchemy_serializer import SerializerMixin
 
-class MyModel(db.Model):
+class MyModel(db.Model, SerializerMixin):
     __tablename__="mytable"
     __table_args__={'mysql_collate': 'utf8_general_ci'}
 

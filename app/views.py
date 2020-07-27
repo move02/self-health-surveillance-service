@@ -13,5 +13,5 @@ def hello():
     return jsonify(
         status=200,
         msg="Hello world",
-        sample=sample
+        sample=sample.to_dict()
     )

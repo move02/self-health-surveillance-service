@@ -5,10 +5,13 @@ import os
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
+from flask_cors import CORS, cross_origin
+
 from config import *
 from dotenv import load_dotenv
-from flask_cors import CORS, cross_origin
+
 import json
+from .error_handlers import *
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -17,8 +20,13 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        static_url_path=''
+    )
     app.config.from_object(config_class)
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(500, internal_error)
 
     db.init_app(app)
     migrate.init_app(app, db)
