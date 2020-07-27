@@ -15,11 +15,35 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "GET":
-        return render_template("admins/login.html")
-    elif request.method == "POST":
-        # 로그인 처리
-        pass
+    if not current_user:
+        if request.method == "GET":
+            return render_template("admins/login.html")
+        elif request.method == "POST":
+            # 로그인 처리
+            input_username = request.args.get("input-username")
+            pass
+    else:
+        return render_template("admins/index.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if not current_user:
+        if request.method == "GET":
+            return render_template("admins/register.html")
+        elif request.method == "POST":
+            # 등록신청 처리
+            input_username = request.args.get("input-username")
+            pass
+    else:
+        return render_template("admins/index.html")
+
+@app.route("/is-unique-username", methods=["POST"])
+def is_unique_username():
+    input_username = request.args.get("inputUsername")
+    result = False
+    if Administrator.query.filter_by(username=input_username).exists():
+        result = True
+    return jsonify(isunique=result)
 
 @app.route("/hello")
 def hello():
