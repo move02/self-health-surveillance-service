@@ -13,7 +13,6 @@ init:
 
 run_tests:
     stage: tests
-    needs: [init]
     script:
         # - export DATABASE_URL=$HEROKU_POSTGRES_URI
         # - apt-get update -qy
@@ -21,6 +20,7 @@ run_tests:
         # - pip3 install -r requirements.txt
         - flask db upgrade
         - python3 tests.py
+    needs: [init]
 
 deploy_staging:
     stage: deploy
