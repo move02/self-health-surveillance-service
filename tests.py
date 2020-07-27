@@ -26,14 +26,18 @@ class MyTestCase(unittest.TestCase):
         # db.create_all()
 
     def test_method(self):
-        # Heroku DB 환경에서는 db connect 있는 테스트 작성 x
-        self.assertGreater(len(mymodel.MyModel.query.all()), 0)
+        self.assertGreater(len(mymodel.Administrators.query.all()), 0)
         pass
     
     def test_solve_hash(self):
         # sample = mymodel.MyModel(username="move02", email="asdf@asdf.com", password="1234")
-        sample = mymodel.MyModel.query.first()
+        sample = mymodel.Administrators.query.first()
         self.assertTrue(sample.check_password("1234"))
+
+    def test_roles(self):
+        sample = mymodel.Administrators.query.filter(usernmae="move02")
+        self.assertIsNotNone(sample)
+        print(sample.roles)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

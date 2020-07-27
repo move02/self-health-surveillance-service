@@ -10,6 +10,16 @@ class Config(object):
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     # LANGUAGES = ['en', 'kr']
 
+    # Flask-Mail SMTP server settings
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = 'email@example.com'
+    MAIL_PASSWORD = 'password'
+    MAIL_DEFAULT_SENDER = '"MyApp" <noreply@example.com>'
+    USER_ENABLE_CHANGE_PASSWORD    = True      # Allow users to change their password
+
 
 class ProductConfig(Config):
     DATABASE = {
@@ -30,5 +40,5 @@ class LocalDevelopConfig(Config):
     pass
 
 class HerokuDevelopConfig(Config):
-    # SQLALCHEMY_DATABASE_URI = f"sqlite:///dev.db"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TINY_DATABASE_URI")
     pass

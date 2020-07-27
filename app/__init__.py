@@ -6,6 +6,8 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_cors import CORS, cross_origin
+from flask_wtf.csrf import CSRFProtect
+from flask_user import UserManager
 
 from config import *
 from dotenv import load_dotenv
@@ -18,6 +20,7 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 db = SQLAlchemy()
 migrate = Migrate()
+csrf = CSRFProtect()
 
 def create_app(config_class=Config):
     app = Flask(
@@ -29,6 +32,7 @@ def create_app(config_class=Config):
     app.register_error_handler(500, internal_error)
 
     db.init_app(app)
+    csrf.init_app(app)
     migrate.init_app(app, db)
     CORS(app, resources={r'*': {'origins': 'http://localhost:5000'}})
 
@@ -73,13 +77,23 @@ else:
 from app.models.mymodel import *
 from app import views
 
+# 나중에 Command모듈을 만들어 db init 및 seeding 관련 따로 뺄 것.
 with app.app_context():
     db.init_app(app)
-    if len(MyModel.query.all()) == 0 and current_env != "Product":
-        db.create_all()
+    if Role.query.filter(name="SysAdmin") == None:
+        db.session.add(Role(name="SysAdmin"))
+        db.session.commit()
+        if Administrators.query.filter(role="SysAdmin") == None:
+            system_admin = Administrators(username="move02", email="move02@daumsoft.com", password="1234")
+            db.session.add(system_admin)
+            db.session.commit()
+
+    if len(Administrators.query.all()) == 0 and current_env != "Product":
         with open("seeds.json", "r") as seed_file:
             seed_data = json.load(seed_file)
             for obj in seed_data["datas"]:
-                sample = MyModel(username=obj["username"], email=obj["email"], password=str(obj["password"]))
+                sample = Administrators(username=obj["username"], email=obj["email"], password=str(obj["password"]))
                 db.session.add(sample)
             db.session.commit()
+
+user_manager = UserManager(app, db, Administrators)
