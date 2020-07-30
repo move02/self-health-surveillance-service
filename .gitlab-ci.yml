@@ -15,6 +15,7 @@ run_tests:
     stage: tests
     script:
         - export DATABASE_URL=$TINY_DATABASE_URI
+        - export SECRET_KEY=12345678
         - apt-get update -qy
         - apt-get install -y python3-dev python3-pip
         - pip3 install -r requirements.txt

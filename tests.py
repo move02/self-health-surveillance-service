@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
 import unittest
 from app import create_app, db
-from app.models import mymodel
+from app.models import admin_models
 from config import *
 from dotenv import load_dotenv
 from app.command import db_init
+from app.utils import generate_random_salt, decode
+import random, base64
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -24,21 +26,27 @@ class MyTestCase(unittest.TestCase):
 
         self.app_context = self.app.app_context()
         self.app_context.push()
-        db_init.init_db()
 
     def test_method(self):
-        self.assertGreater(len(mymodel.Administrator.query.all()), 0)
+        self.assertGreater(len(admin_models.Administrator.query.all()), 0)
         pass
     
     def test_solve_hash(self):
-        # sample = mymodel.MyModel(username="move02", email="asdf@asdf.com", password="1234")
-        sample = mymodel.Administrator.query.first()
+        sample = admin_models.Administrator.query.first()
         self.assertTrue(sample.check_password("1234"))
 
     def test_roles(self):
-        sample = mymodel.Administrator.query.first()
+        sample = admin_models.Administrator.query.first()
         self.assertIsNotNone(sample)
         print(sample.roles)
+
+    def test_encryption(self):
+        for i in range(10):
+            password = str(random.randint(1000, 10000))
+            salt = str(generate_random_salt())
+            pasalt = base64.b64encode((password + salt).encode("UTF-8")).decode("UTF-8")
+            result = decode(pasalt, salt)
+            self.assertEqual(password, result)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

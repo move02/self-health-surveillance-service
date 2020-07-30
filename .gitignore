@@ -229,3 +229,4 @@ __pycache__
 */__pycache__
 .env
 *.db
+flask_session

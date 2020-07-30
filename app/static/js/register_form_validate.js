@@ -3,16 +3,6 @@ var isUniqueId = false;
 var isPasswordValid = false;
 var isPasswordMatch = false;
 
-var csrf_token = "{{ csrf_token() }}";
-
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrf_token);
-        }
-    }
-});
-
 // 유효 패스워드 확인
 $("#input-password").keyup(function () {
     let pwVal = $(this).val();

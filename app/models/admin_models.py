@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app, url_for
 from app import db
 from sqlalchemy_serializer import SerializerMixin
-from flask_user import UserMixin
+from flask_login import UserMixin
 
 class Administrator(db.Model, SerializerMixin, UserMixin):
     __tablename__="administrators"

@@ -4,7 +4,7 @@ from flask import current_app
 from flask_script import Command
 
 from app import db
-from app.models.mymodel import *
+from app.models.admin_models import *
 
 class InitDbCommand(Command):
     def run(self):
@@ -73,3 +73,6 @@ def seeding():
                 new_region = Region(rn)
                 db.session.add(new_region)
             db.session.commit()
+
+if __name__ == "__main__":
+    init_db()

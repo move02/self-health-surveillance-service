@@ -1,4 +1,4 @@
-{% extends 'admin_layout' %}
+{% extends 'login_layout.html' %}
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
@@ -6,23 +6,24 @@
             <div class="card shadow-lg border-0 rounded-lg mt-5">
                 <div class="card-header"><h3 class="text-center font-weight-light my-4">관리자 로그인</h3></div>
                 <div class="card-body">
-                    <form>
+                    <form method="POST" action="{{ url_for('login') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="form-group">
-                            <label class="small mb-1" for="input-id">ID</label>
-                            <input class="form-control py-4" id="input-id" type="text" placeholder="아이디를 입력해주세요." />
+                            <label class="small mb-1" for="input-username">ID</label>
+                            <input class="form-control py-4" name="input-username" id="input-username" type="text" placeholder="아이디를 입력해주세요." />
                         </div>
                         <div class="form-group">
                             <label class="small mb-1" for="input-password">비밀번호</label>
-                            <input class="form-control py-4" id="input-password" type="password" placeholder="비밀번호를 입력해주세요" />
+                            <input class="form-control py-4" name="input-password" id="input-password" type="password" placeholder="비밀번호를 입력해주세요" />
                         </div>
                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                            <a class="small" href="password.html">ID/비밀번호 찾기</a>
-                            <a class="btn btn-primary" href="index.html">로그인</a>
+                            <a class="small" href="{{ url_for('find') }}">ID/비밀번호 찾기</a>
+                            <button class="btn btn-primary" type="submit">로그인</button>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <div class="small"><a href="register.html">관리자 등록하기</a></div>
+                    <div class="small"><a href="{{ url_for('register') }}">관리자 등록하기</a></div>
                 </div>
             </div>
         </div>

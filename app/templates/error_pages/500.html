@@ -1,4 +1,4 @@
-{% extends 'admin_layout.html'}
+{% extends 'admin_layout.html' %}
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
@@ -6,7 +6,7 @@
                 <div class="text-center mt-4">
                     <h1 class="display-1">500</h1>
                     <p class="lead">에러가 발생했습니다. 관리자에게 문의하세요</p>
-                    <a href="index.html">
+                    <a href="{{ url_for('index') }}">
                         <i class="fas fa-arrow-left mr-1"></i>
                         돌아가기
                     </a>

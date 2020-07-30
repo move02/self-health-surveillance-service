@@ -7,7 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_cors import CORS, cross_origin
 from flask_wtf.csrf import CSRFProtect
-from flask_user import UserManager
+from flask_login import LoginManager
+from flask_session import Session
 
 from config import *
 from dotenv import load_dotenv
@@ -21,6 +22,8 @@ load_dotenv(os.path.join(basedir, '.env'))
 db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
+login_manager = LoginManager()
+sess = Session()
 
 def create_app(config_class=Config):
     app = Flask(
@@ -28,12 +31,21 @@ def create_app(config_class=Config):
         static_url_path=''
     )
     app.config.from_object(config_class)
+    app.secret_key = Config.SECRET_KEY
     app.register_error_handler(404, page_not_found)
     app.register_error_handler(500, internal_error)
+
+    ## login manager setting
+    login_manager.login_view = "login"
+    login_manager.register_view = "register"
+    login_manager.login_message = None
 
     db.init_app(app)
     csrf.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
+    sess.init_app(app)
+
     CORS(app, resources={r'*': {'origins': 'http://localhost:5000'}})
 
     if not app.debug and not app.testing:
@@ -74,12 +86,10 @@ else:
     # app = create_app(HerokuDevelopConfig)
     raise EnvironmentError
 
-from app.models.mymodel import *
+from app.models.admin_models import *
 from app import views
 
-from app.command import db_init
-with app.app_context():
-    db.init_app(app)
-    db_init.init_db()
-
-user_manager = UserManager(app, db, Administrator)
+# from app.command import db_init
+# with app.app_context():
+#     db.init_app(app)
+#     # db_init.init_db()

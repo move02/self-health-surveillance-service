@@ -6,28 +6,15 @@
         <div class="card shadow-lg border-0 rounded-lg mt-5">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">관리자 등록 신청</h3></div>
             <div class="card-body">
-                <form class="needs-validation" action="/login" method="POST" id="register-form">
+                <input type="hidden" name="pw-salt" id="pw-salt" value="{{ salt }}">
+                <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form">
                     <div class="form-group">
                         <label class="small mb-1" for="input-region">관할지역</label>
                         <select class="form-control py-3" id="input-region" required>
                             <option selected>--선택--</option>
-                            <option value="1">경기도</option>
-                            <option value="2">강원도</option>
-                            <option value="3">충청북도</option>
-                            <option value="4">충청남도</option>
-                            <option value="5">전라북도</option>
-                            <option value="6">전라남도</option>
-                            <option value="7">경상북도</option>
-                            <option value="8">경상남도</option>
-                            <option value="9">제주도</option>
-                            <option value="10">서울</option>
-                            <option value="11">인천</option>
-                            <option value="12">세종</option>
-                            <option value="13">대전</option>
-                            <option value="14">대구</option>
-                            <option value="15">광주</option>
-                            <option value="16">울산</option>
-                            <option value="17">부산</option>
+                            {% for region in regions %}
+                            <option value="{{ region.id }}">{{ region.name }}</option>
+                            {% endfor %}
                         </select>
                         <div class="valid-feedback">ok</div>
                         <div class="invalid-feedback">관할지역을 선택해주세요.</div>
@@ -57,8 +44,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="input-confirm-password">패스워드 확인</label>
-                                <input class="form-control py-4" id="input-confirm-password" type="password" required/>
+                                <label class="small mb-1" for="input-password-confirm">패스워드 확인</label>
+                                <input class="form-control py-4" id="input-password-confirm" type="password" required/>
                                 <span class="badge badge-pill badge-light" id="password-confirm-badge"></span>
                             </div>
                         </div>
@@ -69,13 +56,14 @@
                 </form>
             </div>
             <div class="card-footer text-center">
-                <div class="small"><a href="/login">이미 계정이 있다면 로그인하세요.</a></div>
+                <div class="small"><a href="{{ url_for('login') }}">이미 계정이 있다면 로그인하세요.</a></div>
             </div>
         </div>
     </div>
 </div>      
-<script src="/js/validate_auth.js"></script>
-<script>    
+<script src="/js/register_form_validate.js"></script>
+<script>
+    const salt = document.getElementById("pw-salt").value;
     (function() {
         'use strict';
         window.addEventListener('load', function() {
@@ -112,11 +100,10 @@
                             document.getElementById("inputConfirmPassword").style.borderColor = "#dc3545";
                             document.getElementById("inputConfirmPassword").classList.add("is-invalid");
                         } else {
-                            // var password = $("#inputPassword");
+                            let pwField = document.getElementById("input-password");
+                            let pwConfirmField = document.getElementById("input-password-confirm");
 
-                            // var rsa = new RSAKey();
-                            // rsa.setPublic("{{}}", "{{}}");
-                            // password.val(rsa.encrypt(password.val()));
+                            [pwField.value, pwConfirmField.value] = [pwField.value, pwConfirmField.value].map(str => btoa(str + salt));
                         }
                     }
                     form.classList.add('was-validated');
@@ -124,7 +111,5 @@
             });
         }, false);
     })();
-
-
 </script>
 {% endblock %}

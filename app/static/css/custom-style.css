@@ -1,0 +1,9 @@
+.hover-message {
+    z-index: 999;
+    right: 0;
+    left: auto;
+}
+
+.find-result {
+    display: none;
+}
