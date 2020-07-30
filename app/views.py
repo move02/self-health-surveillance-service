@@ -45,6 +45,8 @@ def login():
             flash("아이디 혹은 패스워드가 일치하지 않습니다.", "warning")
     return redirect("/")
 
+#===============================회원가입=====================================
+
 @app.route("/admin/register", methods=["GET", "POST"])
 def register():
     if not current_user.is_authenticated:
@@ -62,22 +64,9 @@ def register():
     else:
         return redirect("/")
 
-#===============================중복체크=====================================
-
 @app.route("/admin/check/username", methods=["POST"])
 def check_unique_username():
-    res
     input_username = request.args.get("input-username")
-    result = False
-    if Administrator.query.filter_by(username=input_username).exists():
-        result = True
-    return jsonify(isunique=result)
-
-    
-@app.route("/admin/check/email", methods=["POST"])
-def check_unique_email():
-    res
-    input_email = request.args.get("input-email")
     result = False
     if Administrator.query.filter_by(username=input_username).exists():
         result = True

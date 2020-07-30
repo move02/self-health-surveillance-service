@@ -29,12 +29,12 @@ def create_users():
     db.session.commit()
 
 
-def find_or_create_role(name):
-    role = Role.query.filter(Role.name == name).first()
-    if not role:
-        role = Role(name=name)
-        db.session.add(role)
-    return role
+# def find_or_create_role(name):
+#     role = Role.query.filter(Role.name == name).first()
+#     if not role:
+#         role = Role(name=name)
+#         db.session.add(role)
+#     return role
 
 
 def find_or_create_user(username, email, password, realname, role=None):

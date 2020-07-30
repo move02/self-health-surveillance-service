@@ -9,8 +9,8 @@
                 <input type="hidden" name="pw-salt" id="pw-salt" value="{{ salt }}">
                 <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form">
                     <div class="form-group">
-                        <label class="small mb-1" for="input-region">관할지역</label>
-                        <select class="form-control py-3" id="input-region" required>
+                        <label class="small mb-1" for="input-region-1">관할지역</label>
+                        <select class="form-control" id="input-region-1" name="input-region-1">
                             <option selected>--선택--</option>
                             {% for region in regions %}
                             <option value="{{ region.id }}">{{ region.name }}</option>
@@ -25,7 +25,7 @@
                                 <label class="small mb-1" for="input-username">ID</label>
                                 <input class="form-control py-4" id="input-username" type="text" placeholder="ID를 입력하세요." required/>
                             </div>
-                            <button class="btn btn-primary py-3 offset-1 align-self-center" id="check-username-overlap">중복확인</button>
+                            <button class="btn btn-primary py-3 offset-1 align-self-center" type="button" id="check-username-overlap">중복확인</button>
                         </div>
                         <span class="" id="unique-username-badge"></span>
                         <div class="valid-feedback">ok</div>

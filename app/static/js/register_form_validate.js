@@ -50,7 +50,7 @@ $("#check-username-overlap").click(function(){
     let inputUsername = $("#input-username").val();
     let uniqueIdBadge = $("#unique-username-badge");
     $.ajax({
-        url:contextPath + "/is-unique-username",
+        url:"/admin/check/username",
         method: "POST",
         data:{
             inputUsername : inputUsername
