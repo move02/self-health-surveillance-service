@@ -3,8 +3,9 @@ import datetime
 from flask import current_app
 from flask_script import Command
 
-from app import db
+from app import db, create_app
 from app.models.admin_models import *
+from config import *
 
 class InitDbCommand(Command):
     def run(self):
@@ -21,10 +22,7 @@ def init_db():
 
 def create_users():
     db.create_all()
-
-    admin_role = find_or_create_role('SysAdmin')
-
-    user = find_or_create_user(u'move02', u'move02@daumsoft.com', '1234', u'move02', admin_role)
+    user = find_or_create_user(u'move02', u'move02@daumsoft.com', '1234', u'이동영', "010-2222-2222", is_confirmed=True, authority="ALL", institution="Daumsoft", department="TSC")
 
     db.session.commit()
 
@@ -37,20 +35,23 @@ def create_users():
 #     return role
 
 
-def find_or_create_user(username, email, password, realname, role=None):
+def find_or_create_user(username, email, password, realname, tel, is_confirmed=False, authority=None, charge_region=None, institution=None, department=None):
     user = Administrator.query.filter(Administrator.username == username).first()
     if not user:
-        user = Administrator(username=username,
-                    email=email,
-                    password=password,
-                    realname=realname,
-                    active=True,
-                    email_confirmed_at=datetime.utcnow())
+        user = Administrator(username=username, 
+            email=email, 
+            password=str(password),
+            realname=realname,
+            tel=tel, 
+            is_confirmed=is_confirmed, 
+            authority=authority, 
+            charge_region=charge_region, 
+            institution=institution, 
+            department=department
+        )
 
         user.set_password(password)
-    if role:
-        user.roles.append(role)
-        
+
     db.session.add(user)
     return user
 
@@ -63,16 +64,20 @@ def seeding():
             with open("seeds.json", "r") as seed_file:
                 seed_data = json.load(seed_file)
                 for obj in seed_data["datas"]:
-                    sample = Administrator(username=obj["username"], email=obj["email"], password=str(obj["password"]))
+                    sample = Administrator(username=obj["username"], 
+                        email=obj["email"], 
+                        password=str(obj["password"]),
+                        realname=obj["realname"],
+                        tel=obj["tel"], 
+                        institution=obj["institution"], 
+                        department=obj["department"]
+                    )
                     db.session.add(sample)
                 db.session.commit()
 
-        if len(Region.query.all()) == 0 and current_env != "Product":
-            region_names = ["서울", "인천", "대전", "대구", "광주", "부산", "울산", "경기", "강원", "충북", "충남", "경북", "경남", "전북", "전남", "제주"]
-            for rn in region_names:
-                new_region = Region(rn)
-                db.session.add(new_region)
-            db.session.commit()
-
 if __name__ == "__main__":
+    app = create_app(TestConfig)
+
+    app_context = app.app_context()
+    app_context.push()
     init_db()

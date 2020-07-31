@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session
 from app import app, login_manager, db
-from .models.admin_models import Administrator, Role, Region
+from .models.admin_models import Administrator
 from flask_login import login_required, current_user, login_user, logout_user
 from .utils import is_safe_url, generate_random_salt, decode
 
@@ -51,11 +51,10 @@ def login():
 def register():
     if not current_user.is_authenticated:
         if request.method == "GET":
-            regions = Region.query.all()
             salt = generate_random_salt()
             session['salt'] = salt
 
-            return render_template("admin/register.html", regions=regions, salt=salt)
+            return render_template("admin/register.html", salt=salt)
         elif request.method == "POST":
             # 등록신청 처리
             input_username = request.args.get("input-username")
@@ -77,11 +76,10 @@ def check_unique_username():
 @app.route("/admin/find", methods=["GET"])
 def find():
     if not current_user.is_authenticated:
-        regions = Region.query.all()
         salt = generate_random_salt()
         session['salt'] = salt
 
-        return render_template("admin/password.html", regions=regions, salt=salt)
+        return render_template("admin/password.html", salt=salt)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
         return redirect(url_for('index'))
@@ -94,10 +92,15 @@ def find_password():
         input_username = form_data.get("input-username")
         input_email = form_data.get("input-email-address-2")
         
-        query_result = Administrator.query.filter_by(region_id=input_region, username=input_username, email=input_email)
+        print(input_region)
+        
+        if input_region != "":
+            query_result = Administrator.query.filter_by(charge_region=input_region, username=input_username, email=input_email)
+        else:
+            query_result = Administrator.query.filter_by(username=input_username, email=input_email)
         if query_result.count() != 0:
             admin = query_result.first()
-            return jsonify(status=200, is_authenticated=True, user_id=admin.id)
+            return jsonify(status=200, is_authenticated=True, user_id=admin.sn)
         else:
             return jsonify(status=200, is_authenticated=False)
     else:
@@ -111,7 +114,12 @@ def find_username():
         input_region = form_data.get("input-region-1")
         input_email = form_data.get("input-email-address-1")
 
-        query_result = Administrator.query.filter_by(region_id=input_region, email=input_email)
+        print(input_region)
+
+        if input_region != "":
+            query_result = Administrator.query.filter_by(charge_region=input_region, email=input_email)
+        else:
+            query_result = Administrator.query.filter_by(email=input_email)
         if query_result.count() != 0:
             admin = query_result.first()
             return jsonify(status=200, username=admin.username)
@@ -131,8 +139,6 @@ def change_password():
     salt = session.get("salt")
     new_password = decode(new_password, salt)
     new_password_confirm = decode(new_password_confirm, salt)
-
-    pdb.set_trace()
 
     if new_password == new_password_confirm:
         admin = Administrator.query.get(admin_id)

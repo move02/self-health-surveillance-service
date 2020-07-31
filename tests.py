@@ -35,11 +35,6 @@ class MyTestCase(unittest.TestCase):
         sample = admin_models.Administrator.query.first()
         self.assertTrue(sample.check_password("1234"))
 
-    def test_roles(self):
-        sample = admin_models.Administrator.query.first()
-        self.assertIsNotNone(sample)
-        print(sample.roles)
-
     def test_encryption(self):
         for i in range(10):
             password = str(random.randint(1000, 10000))

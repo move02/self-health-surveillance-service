@@ -12,9 +12,23 @@
                         <label class="small mb-1" for="input-region-1">관할지역</label>
                         <select class="form-control" id="input-region-1" name="input-region-1">
                             <option selected>--선택--</option>
-                            {% for region in regions %}
-                            <option value="{{ region.id }}">{{ region.name }}</option>
-                            {% endfor %}
+                            <!-- <option value="1">경기도</option>
+                            <option value="2">강원도</option>
+                            <option value="3">충청북도</option>
+                            <option value="4">충청남도</option>
+                            <option value="5">전라북도</option>
+                            <option value="6">전라남도</option>
+                            <option value="7">경상북도</option>
+                            <option value="8">경상남도</option>
+                            <option value="9">제주도</option>
+                            <option value="10">서울</option>
+                            <option value="11">인천</option>
+                            <option value="12">세종</option>
+                            <option value="13">대전</option>
+                            <option value="14">대구</option>
+                            <option value="15">광주</option>
+                            <option value="16">울산</option>
+                            <option value="17">부산</option> -->
                         </select>
                         <div class="valid-feedback">ok</div>
                         <div class="invalid-feedback">관할지역을 선택해주세요.</div>

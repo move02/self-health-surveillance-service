@@ -56,6 +56,9 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def get_id(self):
+        return self.sn
+
     # 시스템 관리자(상위관리자 기능)
     def confirm_user(self, target_user):
         target_user.is_confirmed = True
