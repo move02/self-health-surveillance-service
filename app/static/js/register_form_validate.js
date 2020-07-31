@@ -52,6 +52,10 @@ $("#check-username-overlap").click(function(){
     $.ajax({
         url:"/admin/check/username",
         method: "POST",
+        headers: {
+            "X-CSRFToken": csrf_token,
+            "Content-type": "application/json"
+        },
         data:{
             inputUsername : inputUsername
         },

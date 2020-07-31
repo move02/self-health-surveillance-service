@@ -8,6 +8,7 @@
             <div class="card-body">
                 <input type="hidden" name="pw-salt" id="pw-salt" value="{{ salt }}">
                 <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <div class="form-group">
                         <label class="small mb-1" for="input-region-1">관할지역</label>
                         <select class="form-control" id="input-region-1" name="input-region-1">
@@ -75,6 +76,7 @@
         </div>
     </div>
 </div>      
+<script src="/js/csrf_ajax.js"></script>
 <script src="/js/register_form_validate.js"></script>
 <script>
     const salt = document.getElementById("pw-salt").value;

@@ -66,9 +66,9 @@ def register():
 @app.route("/admin/check/username", methods=["POST"])
 def check_unique_username():
     input_username = request.args.get("input-username")
-    result = False
-    if Administrator.query.filter_by(username=input_username).exists():
-        result = True
+    result = "False"
+    if Administrator.query.filter_by(username=input_username) is not None:
+        result = "True"
     return jsonify(isunique=result)
 
 #=========================================ID/PW 찾기====================================

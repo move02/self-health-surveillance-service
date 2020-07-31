@@ -19,8 +19,7 @@ run_tests:
         - apt-get update -qy
         - apt-get install -y python3-dev python3-pip
         - pip3 install -r requirements.txt
-        - python3 tests.py
-    needs: [init]
+        - python3 tests_utils.py
 
 deploy_staging:
     stage: deploy
