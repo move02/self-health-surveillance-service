@@ -45,37 +45,72 @@ $("#password-confirm").keyup(function () {
     confirmPw(pwVal, pwConfirmVal, pwConfirmBadge)
 });
 
+function showMessage(jsonResult){
+    let uniqueIdBadge = $("#unique-username-badge");
+    //로직
+    if(jsonResult['isunique']){
+        isUniqueId = true;
+        uniqueIdBadge.toggleClass("text-warning", false);
+        uniqueIdBadge.toggleClass("text-danger", false);
+        uniqueIdBadge.toggleClass("text-success", true);
+        uniqueIdBadge.text("사용 가능한 id입니다.");
+    } else {
+        isUniqueId = false;
+        uniqueIdBadge.toggleClass("text-warning", false);
+        uniqueIdBadge.toggleClass("text-danger", true);
+        uniqueIdBadge.toggleClass("text-success", false);
+        uniqueIdBadge.text("이미 사용중인 id입니다.");
+    }
+}
+
 // 아이디 중복체크
 $("#check-username-overlap").click(function(){
     let inputUsername = $("#input-username").val();
-    let uniqueIdBadge = $("#unique-username-badge");
-    $.ajax({
-        url:"/admin/check/username",
-        method: "POST",
+    fetch("/admin/check/username", {
         headers: {
             "X-CSRFToken": csrf_token,
             "Content-type": "application/json"
         },
-        data:{
-            inputUsername : inputUsername
-        },
-        success:function(data){
-            //로직
-            if(data['isunique'] === "true"){
-                isUniqueId = true;
-                uniqueIdBadge.toggleClass("text-warning", false);
-                uniqueIdBadge.toggleClass("text-danger", false);
-                uniqueIdBadge.toggleClass("text-success", true);
-                uniqueIdBadge.text("사용 가능한 id입니다.");
-            } else {
-                isUniqueId = false;
-                uniqueIdBadge.toggleClass("text-warning", false);
-                uniqueIdBadge.toggleClass("text-danger", true);
-                uniqueIdBadge.toggleClass("text-success", false);
-                uniqueIdBadge.text("이미 사용중인 id입니다.");
-            }
+        method: "POST",
+        // body: new FormData(form)
+        body : JSON.stringify({
+            "input-username" : inputUsername
+        })
+    }).then(
+        response => response.text()
+    ).then(json => {
+            showMessage(JSON.parse(json))
         }
+    ).catch(error => {
+        ajaxError(response.status)
     })
+    // $.ajax({
+    //     url:"/admin/check/username",
+    //     method: "POST",
+    //     headers: {
+    //         "X-CSRFToken": csrf_token,
+    //         "Content-type": "application/json"
+    //     },
+    //     data:{
+    //         "input-username" : inputUsername
+    //     },
+    //     success:function(result){
+    //         //로직
+    //         if(result['isunique']){
+    //             isUniqueId = true;
+    //             uniqueIdBadge.toggleClass("text-warning", false);
+    //             uniqueIdBadge.toggleClass("text-danger", false);
+    //             uniqueIdBadge.toggleClass("text-success", true);
+    //             uniqueIdBadge.text("사용 가능한 id입니다.");
+    //         } else {
+    //             isUniqueId = false;
+    //             uniqueIdBadge.toggleClass("text-warning", false);
+    //             uniqueIdBadge.toggleClass("text-danger", true);
+    //             uniqueIdBadge.toggleClass("text-success", false);
+    //             uniqueIdBadge.text("이미 사용중인 id입니다.");
+    //         }
+    //     }
+    // })
 });
 
 function confirmPw(pwVal, pwConfirmVal, pwConfirmBadge){

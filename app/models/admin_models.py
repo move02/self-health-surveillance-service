@@ -56,6 +56,7 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    # UserMixin 클래스 메소드 오버라이드
     def get_id(self):
         return self.sn
 
