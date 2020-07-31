@@ -38,8 +38,8 @@ $("#input-username").keyup(function(){
 });
 
 // 패스워드 및 패스워드 확인
-$("#password-confirm").keyup(function () {
-    let pwVal = $("#emplyrPassword").val();
+$("#input-password-confirm").keyup(function () {
+    let pwVal = $("#input-password").val();
     let pwConfirmVal = $(this).val();
     let pwConfirmBadge = $("#password-confirm-badge");
     confirmPw(pwVal, pwConfirmVal, pwConfirmBadge)

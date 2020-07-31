@@ -7,29 +7,15 @@
             <div class="card-header"><h3 class="text-center font-weight-light my-4">관리자 등록 신청</h3></div>
             <div class="card-body">
                 <input type="hidden" name="pw-salt" id="pw-salt" value="{{ salt }}">
-                <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form">
+                <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form" novalidate>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <div class="form-group">
-                        <label class="small mb-1" for="input-region-1">관할지역</label>
-                        <select class="form-control" id="input-region-1" name="input-region-1">
-                            <option selected>--선택--</option>
-                            <!-- <option value="1">경기도</option>
-                            <option value="2">강원도</option>
-                            <option value="3">충청북도</option>
-                            <option value="4">충청남도</option>
-                            <option value="5">전라북도</option>
-                            <option value="6">전라남도</option>
-                            <option value="7">경상북도</option>
-                            <option value="8">경상남도</option>
-                            <option value="9">제주도</option>
-                            <option value="10">서울</option>
-                            <option value="11">인천</option>
-                            <option value="12">세종</option>
-                            <option value="13">대전</option>
-                            <option value="14">대구</option>
-                            <option value="15">광주</option>
-                            <option value="16">울산</option>
-                            <option value="17">부산</option> -->
+                        <label class="small mb-1" for="input-area-1">관할지역</label>
+                        <select class="form-control" id="input-area-1" name="input-area-1" required>
+                            <option selected value="">--선택--</option>
+                            {% for area in areas %}
+                            <option value="{{ area.code }}">{{ area.code_value }}</option>
+                            {% endfor %}
                         </select>
                         <div class="valid-feedback">ok</div>
                         <div class="invalid-feedback">관할지역을 선택해주세요.</div>
@@ -46,9 +32,37 @@
                         <div class="valid-feedback">ok</div>
                         <div class="invalid-feedback">id를 입력해주세요.</div>
                     </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="input-institution">기관</label>
+                                <input class="form-control py-4" id="input-institution" type="text" placeholder="소속기관을 입력하세요." required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="input-department">부서</label>
+                                <input class="form-control py-4" id="input-department" type="text" placeholder="소속부서를 입력하세요." required/>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label class="small mb-1" for="input-email">Email</label>
-                        <input class="form-control py-4" id="input-email" type="email" aria-describedby="emailHelp" placeholder="메일주소를 입력하세요." required/>
+                        <label class="small mb-1" for="input-realname">성함</label>
+                        <input class="form-control py-4" id="input-realname" type="text" placeholder="성함(본명)을 입력하세요." required/>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="input-email">Email</label>
+                                <input class="form-control py-4" id="input-email" type="email" placeholder="메일주소를 입력하세요." required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="input-tel">연락처</label>
+                                <input class="form-control py-4" id="input-tel" type="tel" placeholder="직장 내 연락처를 입력하세요." required/>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
@@ -66,7 +80,7 @@
                         </div>
                     </div>
                     <div class="form-group mt-4 mb-0">
-                        <button class="btn btn-primary" type="button">가입신청</button>
+                        <button class="btn btn-primary" type="submit">가입신청</button>
                     </div>
                 </form>
             </div>
@@ -103,18 +117,18 @@
                             event.preventDefault();
                             event.stopPropagation();
                             alert("PW 작성 규칙을 확인해주세요. (4자리 이상)");
-                            document.getElementById("inputPassword").classList.remove("is-valid");
-                            document.getElementById("inputPassword").style.borderColor = "#dc3545";
-                            document.getElementById("inputPassword").classList.add("is-invalid");
+                            document.getElementById("input-password").classList.remove("is-valid");
+                            document.getElementById("input-password").style.borderColor = "#dc3545";
+                            document.getElementById("input-password").classList.add("is-invalid");
                         }
 
                         else if(!isPasswordMatch){
                             event.preventDefault();
                             event.stopPropagation();
                             alert("PW가 일치하는지 확인하세요.");
-                            document.getElementById("inputConfirmPassword").classList.remove("is-valid");
-                            document.getElementById("inputConfirmPassword").style.borderColor = "#dc3545";
-                            document.getElementById("inputConfirmPassword").classList.add("is-invalid");
+                            document.getElementById("input-password-confirm").classList.remove("is-valid");
+                            document.getElementById("input-password-confirm").style.borderColor = "#dc3545";
+                            document.getElementById("input-password-confirm").classList.add("is-invalid");
                         } else {
                             let pwField = document.getElementById("input-password");
                             let pwConfirmField = document.getElementById("input-password-confirm");

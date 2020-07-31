@@ -38,7 +38,7 @@ def create_users():
 #     return role
 
 
-def find_or_create_user(username, email, password, realname, tel, is_confirmed=False, authority=None, charge_region=None, institution=None, department=None):
+def find_or_create_user(username, email, password, realname, tel, is_confirmed=False, authority=None, charge_area=None, institution=None, department=None):
     user = Administrator.query.filter(Administrator.username == username).first()
     if not user:
         user = Administrator(username=username, 
@@ -48,7 +48,7 @@ def find_or_create_user(username, email, password, realname, tel, is_confirmed=F
             tel=tel, 
             is_confirmed=is_confirmed, 
             authority=authority, 
-            charge_region=charge_region, 
+            charge_area=charge_area, 
             institution=institution, 
             department=department
         )

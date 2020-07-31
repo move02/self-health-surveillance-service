@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session
 from app import app, login_manager, db
 from .models.admin_models import Administrator
+from .models.common_models import CommonCode
 from flask_login import login_required, current_user, login_user, logout_user
 from .utils import is_safe_url, generate_random_salt, decode
 
@@ -22,15 +23,18 @@ def index():
 def login():
     if not current_user.is_authenticated:
         if request.method == "GET":
-            return render_template("admin/login.html")
+            salt = generate_random_salt()
+            session['salt'] = salt
+            return render_template("admin/login.html", salt=salt)
         elif request.method == "POST":
             # 로그인 처리
             input_username = request.form["input-username"]
             input_password = request.form["input-password"]
 
+            salt = session.get("salt")
+            input_password = decode(input_password, salt)
+
             user = Administrator.query.filter_by(username=input_username).first()
-            print(input_username)
-            print(input_password)
             if user:
                 if user.check_password(input_password):
                     login_user(user)
@@ -51,13 +55,38 @@ def login():
 def register():
     if not current_user.is_authenticated:
         if request.method == "GET":
+            areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
+
             salt = generate_random_salt()
             session['salt'] = salt
 
-            return render_template("admin/register.html", salt=salt)
+            return render_template("admin/register.html", areas=areas, salt=salt)
         elif request.method == "POST":
             # 등록신청 처리
-            input_username = request.args.get("input-username")
+            form_data = request.form
+
+            # 사용자 정보들
+            #     def __init__(self, username, email, password, realname, tel=None, is_confirmed=False, authority=None, charge_area=None, institution=None, department=None):
+            input_area = form_data.get("input-area")
+            input_username = form_data.get("input-username")
+            input_email = form_data.get("input-email")
+            input_password = form_data.get("input-password")
+            input_password_confirm = form_data.get("input-password-confirm")
+            input_institution = form_data.get("input-institution")
+            input_department = form_data.get("input-department")
+            input_realname = form_data.get("input-realname")
+            input_tel = form_data.get("input-tel")
+            
+            salt = session.get("salt")
+            input_password = decode(input_password, salt)
+            input_password_confirm = decode(input_password_confirm, salt)
+
+            if input_password == input_password_confirm:
+                new_admin = Administrator(
+                    username=username,
+                    
+                )
+
             flash("신청이 처리되었습니다.", "success")
             return redirect("/login")
     else:
@@ -65,10 +94,8 @@ def register():
 
 @app.route("/admin/check/username", methods=["POST"])
 def check_unique_username():
-    input_username = request.get_json.get("input-username")
+    input_username = request.get_json().get("input-username")
     result = True
-
-    pdb.set_trace()
 
     if Administrator.query.filter_by(username=input_username).count() > 0:
         result = False
@@ -81,8 +108,9 @@ def find():
     if not current_user.is_authenticated:
         salt = generate_random_salt()
         session['salt'] = salt
+        areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
 
-        return render_template("admin/password.html", salt=salt)
+        return render_template("admin/password.html", areas=areas, salt=salt)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
         return redirect(url_for('index'))
@@ -91,14 +119,14 @@ def find():
 def find_password():
     if not current_user.is_authenticated:
         form_data = request.get_json(force=True)
-        input_region = form_data.get("input-region-2")
+        input_area = form_data.get("input-area-2")
         input_username = form_data.get("input-username")
         input_email = form_data.get("input-email-address-2")
         
-        print(input_region)
+        print(input_area)
         
-        if input_region != "":
-            query_result = Administrator.query.filter_by(charge_region=input_region, username=input_username, email=input_email)
+        if input_area != "":
+            query_result = Administrator.query.filter_by(charge_area=input_area, username=input_username, email=input_email)
         else:
             query_result = Administrator.query.filter_by(username=input_username, email=input_email)
         if query_result.count() != 0:
@@ -114,13 +142,13 @@ def find_password():
 def find_username():
     if not current_user.is_authenticated:
         form_data = request.get_json(force=True)
-        input_region = form_data.get("input-region-1")
+        input_area = form_data.get("input-area-1")
         input_email = form_data.get("input-email-address-1")
 
-        print(input_region)
+        print(input_area)
 
-        if input_region != "":
-            query_result = Administrator.query.filter_by(charge_region=input_region, email=input_email)
+        if input_area != "":
+            query_result = Administrator.query.filter_by(charge_area=input_area, email=input_email)
         else:
             query_result = Administrator.query.filter_by(email=input_email)
         if query_result.count() != 0:

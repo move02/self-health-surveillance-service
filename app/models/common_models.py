@@ -31,4 +31,8 @@ class CommonCode(db.Model, SerializerMixin):
 
     def __repr__(self):
         return '<Group {} / Code : {} / Value : {}>'.format(self.group_code, self.code, self.code_value)
+
+    @staticmethod
+    def get_objects_from_code_value(code_value):
+        return CommonCode.query.filter_by(code_value=code_value)
     

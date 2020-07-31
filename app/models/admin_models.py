@@ -6,6 +6,12 @@ from flask import current_app, url_for
 from app import db
 from sqlalchemy_serializer import SerializerMixin
 from flask_login import UserMixin
+from .common_models import CommonCode
+
+from dotenv import load_dotenv
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env_code'))
 
 class Administrator(db.Model, SerializerMixin, UserMixin):
     __tablename__="T_ADMIN_INFO_M01"
@@ -29,19 +35,19 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     deleted_date = db.Column("DELETE_DATE", db.DateTime)
     last_login = db.Column("LAST_LOGIN", db.DateTime)
     authority = db.Column("AUTHOR", db.String(20))
-    charge_region = db.Column("JURANG", db.String(20))
+    charge_area = db.Column("JURANG", db.String(20))
     email = db.Column("EMAIL", db.String(50), index=True, unique=True, nullable=False)
     institution = db.Column("INSTT_NM", db.String(100))
     department = db.Column("DEPT_NM", db.String(100))
     
-    def __init__(self, username, email, password, realname, tel=None, is_confirmed=False, authority=None, charge_region=None, institution=None, department=None):
+    def __init__(self, username, email, password, realname, tel=None, is_confirmed=False, authority=None, charge_area=None, institution=None, department=None):
         self.username = username
         self.email = email
         self.realname = realname
         self.tel = tel
         self.is_confirmed = is_confirmed
         self.authority = authority
-        self.charge_region = charge_region
+        self.charge_area = charge_area
         self.institution = institution
         self.department = department
 
@@ -79,6 +85,49 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
             exec("self.{} = v".format(k))
         return self
 
-    @staticmethod
-    def check_unique_email(email):
-        return Administrator.query.filter_by(email=email).count() == 0
+    # NotNull Decorator
+    def not_null(func):
+        def wrapper(*args, **kwargs):
+            if not args[-1]:
+                raise AssertionError("{} is not nullable".format(args[-1].__name__))
+            return func(*args, **kwargs)
+        return wrapper
+
+    # Validators
+    @validates('username')
+    @not_null
+    def validate_username(self, key, username):
+        if len(username) > 30:
+            raise AssertionError("Username must be less than 30 characaters")
+        if Administrator.query.filter(Administrator.username == username).first():
+            raise AssertionError("Username is already in use")
+
+        return username
+    
+    @validates('realname')
+    @not_null
+    def validate_realname(self, key, realname):
+        if len(realname) > 100:
+            raise AssertionError("Realname must be less than 100 characaters")
+    
+    @validates('email')
+    @not_null
+    def validate_email(self, key, email):
+        if len(email) > 30:
+            raise AssertionError("Email must be less than 50 characaters")
+        if Administrator.query.filter(Administrator.email == email).first():
+            raise AssertionError("Email is already in use")
+
+    @validates('tel')
+    def validate_tel(self, key, tel):
+        if len(tel) > 15:
+            raise AssertionError("Tel must be less than 15 characaters")
+
+    @validates('charge_area')
+    @not_null
+    def validate_charge_area(self, key, charge_area):
+        area_group_code = os.environ.get("AREA_CODE_GROUP")
+        if len(charge_area) > 15:
+            raise AssertionError("Charge Area must be less than 15 characaters")
+        if CommonCode.query.filter_by(group_code=area_group_code, code_value=charge_area).count() < 1:
+            raise AssertionError("There is no area code like {}".format(charge_area))

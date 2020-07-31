@@ -227,6 +227,6 @@ pip-selfcheck.json
 
 __pycache__
 */__pycache__
-.env
+.env*
 *.db
 flask_session
