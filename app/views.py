@@ -17,7 +17,10 @@ def load_user(user_id):
 @app.route("/admin/index")
 @login_required
 def index():
-    return render_template("admin/index.html")
+    if current_user.is_confirmed:
+        return render_template("admin/index.html")
+    else:
+        return redirect(url_for("wait"))
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def login():
@@ -58,7 +61,7 @@ def wait():
     user = current_user
     if user.is_confirmed:
         flash("잘못된 접근입니다.", "warning")
-        return redirect(url_for("/index"))
+        return redirect(url_for("index"))
     else:
         return render_template("/admin/wait.html")
 
@@ -112,7 +115,7 @@ def register():
                 db.session.commit()
 
             flash("신청이 처리되었습니다.", "success")
-            return redirect("/login")
+            return redirect("/admin/login")
     else:
         return redirect("/")
 
