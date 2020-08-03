@@ -5,10 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app, url_for
 from app import db
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import validates
 from flask_login import UserMixin
 from .common_models import CommonCode
 
 from dotenv import load_dotenv
+
+import pdb
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env_code'))
@@ -30,7 +33,7 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     registered_date = db.Column("REGIST_DATE", db.DateTime, server_default=db.func.now())
     updated_id = db.Column("UPDT_ID", db.String(30))
     updated_date = db.Column("UPDT_DATE", db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
-    is_deleted = db.Column("DELETE_AT", db.Boolean, nullable=False, default=False)
+    is_deleted = db.Column("DELETE_AT", db.Boolean, default=False)
     deleted_user = db.Column("DELETE_ID", db.String(30))
     deleted_date = db.Column("DELETE_DATE", db.DateTime)
     last_login = db.Column("LAST_LOGIN", db.DateTime)
@@ -50,9 +53,9 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
         self.charge_area = charge_area
         self.institution = institution
         self.department = department
-
+        
         self.set_password(password)
-    
+
     def __repr__(self):
         return '<User {} / name : {}>'.format(self.username, self.realname)
 
@@ -109,6 +112,8 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     def validate_realname(self, key, realname):
         if len(realname) > 100:
             raise AssertionError("Realname must be less than 100 characaters")
+        
+        return realname
     
     @validates('email')
     @not_null
@@ -118,10 +123,14 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
         if Administrator.query.filter(Administrator.email == email).first():
             raise AssertionError("Email is already in use")
 
+        return email
+
     @validates('tel')
     def validate_tel(self, key, tel):
         if len(tel) > 15:
             raise AssertionError("Tel must be less than 15 characaters")
+        
+        return tel
 
     @validates('charge_area')
     @not_null
@@ -129,5 +138,22 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
         area_group_code = os.environ.get("AREA_CODE_GROUP")
         if len(charge_area) > 15:
             raise AssertionError("Charge Area must be less than 15 characaters")
-        if CommonCode.query.filter_by(group_code=area_group_code, code_value=charge_area).count() < 1:
-            raise AssertionError("There is no area code like {}".format(charge_area))
+        if CommonCode.query.filter_by(group_code=area_group_code, code=charge_area).count() < 1:
+            raise AssertionError("There is no area code like {}.{}".format(area_group_code, charge_area))
+
+        return charge_area
+
+    @validates('institution')
+    def validate_institution(self, key, institution):
+        if len(institution) > 100:
+            raise AssertionError("Institution must be less than 100 characaters")
+
+        return institution
+
+    @validates('deptartment')
+    def validate_institution(self, key, department):
+        if len(department) > 100:
+            raise AssertionError("Department must be less than 100 characaters")
+
+        return department
+        

@@ -39,15 +39,29 @@ def login():
                 if user.check_password(input_password):
                     login_user(user)
                     flash("안녕하세요 {} 님".format(user.realname), "success")
+                    
+                    if user.is_confirmed:
+                        next = request.args.get('next')
+                        if not is_safe_url(next, request):
+                            return flask.abort(400)
 
-                    next = request.args.get('next')
-                    if not is_safe_url(next, request):
-                        return flask.abort(400)
-
-                    return redirect(next or url_for('index'))
+                        return redirect(next or url_for('index'))
+                    else:
+                        return redirect(url_for("wait"))
             
             flash("아이디 혹은 패스워드가 일치하지 않습니다.", "warning")
-    return redirect("/")
+    return redirect("/admin")
+
+@app.route("/admin/wait", methods=["GET"])
+@login_required
+def wait():
+    user = current_user
+    if user.is_confirmed:
+        flash("잘못된 접근입니다.", "warning")
+        return redirect(url_for("/index"))
+    else:
+        return render_template("/admin/wait.html")
+
 
 #===============================회원가입=====================================
 
@@ -83,9 +97,19 @@ def register():
 
             if input_password == input_password_confirm:
                 new_admin = Administrator(
-                    username=username,
-                    
+                    username=input_username,
+                    realname=input_realname,
+                    tel=input_tel,
+                    email=input_email,
+                    password=input_password,
+                    is_confirmed=False,
+                    charge_area=input_area,
+                    institution=input_institution,
+                    department=input_department
                 )
+
+                db.session.add(new_admin)
+                db.session.commit()
 
             flash("신청이 처리되었습니다.", "success")
             return redirect("/login")
@@ -110,6 +134,8 @@ def find():
         session['salt'] = salt
         areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
 
+        pdb.set_trace()
+
         return render_template("admin/password.html", areas=areas, salt=salt)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
@@ -122,8 +148,6 @@ def find_password():
         input_area = form_data.get("input-area-2")
         input_username = form_data.get("input-username")
         input_email = form_data.get("input-email-address-2")
-        
-        print(input_area)
         
         if input_area != "":
             query_result = Administrator.query.filter_by(charge_area=input_area, username=input_username, email=input_email)
@@ -144,8 +168,6 @@ def find_username():
         form_data = request.get_json(force=True)
         input_area = form_data.get("input-area-1")
         input_email = form_data.get("input-email-address-1")
-
-        print(input_area)
 
         if input_area != "":
             query_result = Administrator.query.filter_by(charge_area=input_area, email=input_email)
@@ -194,13 +216,22 @@ def logout():
         flash("올바른 접근이 아닙니다.", "warning")
         return redirect(url_for('login'))
 
+#======================================================================
 
-@app.route("/hello")
-def hello():
-    sample = Administrator.query.first()
+@app.route("/admin/breakouts", methods=["GET"])
+@login_required
+def breakouts():
+    if current_user.is_confirmed:
+        # 확진자 분석결과 조회
+        return render_template("/admin/breakouts.html")
+    else:
+        return redirect(url_for('wait'))
 
-    return jsonify(
-        status=200,
-        msg="Hello world",
-        sample=sample.to_dict()
-    )
+@app.route("/admin/suspecters", methods=["GET"])
+@login_required
+def suspecters():
+    if current_user.is_confirmed:
+        # 감염 의심자 발생현황 조회
+        return render_template("/admin/suspecters.html")
+    else:
+        return redirect(url_for('wait'))

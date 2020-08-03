@@ -10,8 +10,8 @@
                 <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form" novalidate>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <div class="form-group">
-                        <label class="small mb-1" for="input-area-1">관할지역</label>
-                        <select class="form-control" id="input-area-1" name="input-area-1" required>
+                        <label class="small mb-1" for="input-area">관할지역</label>
+                        <select class="form-control" id="input-area" name="input-area" required>
                             <option selected value="">--선택--</option>
                             {% for area in areas %}
                             <option value="{{ area.code }}">{{ area.code_value }}</option>
@@ -24,7 +24,7 @@
                         <div class="form-row dflex">
                             <div class="form-group col-9">
                                 <label class="small mb-1" for="input-username">ID</label>
-                                <input class="form-control py-4" id="input-username" type="text" placeholder="ID를 입력하세요." required/>
+                                <input class="form-control py-4" id="input-username" name="input-username" type="text" placeholder="ID를 입력하세요." required/>
                             </div>
                             <button class="btn btn-primary py-3 offset-1 align-self-center" type="button" id="check-username-overlap">중복확인</button>
                         </div>
@@ -36,31 +36,31 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-institution">기관</label>
-                                <input class="form-control py-4" id="input-institution" type="text" placeholder="소속기관을 입력하세요." required/>
+                                <input class="form-control py-4" id="input-institution" name="input-institution" type="text" placeholder="소속기관을 입력하세요." required/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-department">부서</label>
-                                <input class="form-control py-4" id="input-department" type="text" placeholder="소속부서를 입력하세요." required/>
+                                <input class="form-control py-4" id="input-department" name="input-department" type="text" placeholder="소속부서를 입력하세요." required/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="small mb-1" for="input-realname">성함</label>
-                        <input class="form-control py-4" id="input-realname" type="text" placeholder="성함(본명)을 입력하세요." required/>
+                        <input class="form-control py-4" id="input-realname" name="input-realname" type="text" placeholder="성함(본명)을 입력하세요." required/>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-email">Email</label>
-                                <input class="form-control py-4" id="input-email" type="email" placeholder="메일주소를 입력하세요." required/>
+                                <input class="form-control py-4" id="input-email" name="input-email" type="email" placeholder="메일주소를 입력하세요." required/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-tel">연락처</label>
-                                <input class="form-control py-4" id="input-tel" type="tel" placeholder="직장 내 연락처를 입력하세요." required/>
+                                <input class="form-control py-4" id="input-tel" name="input-tel" type="tel" placeholder="직장 내 연락처를 입력하세요." required/>
                             </div>
                         </div>
                     </div>
@@ -68,13 +68,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-password">패스워드</label>
-                                <input class="form-control py-4" id="input-password" type="password" pattern="[0-9]{4}" required/>
+                                <input class="form-control py-4" id="input-password" name="input-password" type="password" pattern="[0-9]{4}" required/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-password-confirm">패스워드 확인</label>
-                                <input class="form-control py-4" id="input-password-confirm" type="password" required/>
+                                <input class="form-control py-4" id="input-password-confirm" name="input-password-confirm" type="password" required/>
                                 <span class="badge badge-pill badge-light" id="password-confirm-badge"></span>
                             </div>
                         </div>

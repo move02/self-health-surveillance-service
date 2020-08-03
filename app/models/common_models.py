@@ -10,7 +10,7 @@ class CommonCode(db.Model, SerializerMixin):
     __table_args__={'mysql_collate': 'utf8_general_ci'}
 
     group_code = db.Column("GROUP_CODE", db.String(30), index=True, primary_key=True)
-    code = db.Column("ID", db.String(30), index=True, unique=True, primary_key=True)
+    code = db.Column("CODE", db.String(30), index=True, unique=True, primary_key=True)
     code_value = db.Column("CODE_VALUE", db.String(30), nullable=False)
     regist_date = db.Column("REGIST_DATE", db.DateTime, server_default=db.func.now(), nullable=False)
     code_desc = db.Column("CODE_DC", db.String(1000))

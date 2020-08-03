@@ -6,7 +6,8 @@
             <div class="card shadow-lg border-0 rounded-lg mt-5">
                 <div class="card-header"><h3 class="text-center font-weight-light my-4">관리자 로그인</h3></div>
                 <div class="card-body">
-                    <form method="POST" action="{{ url_for('login') }}">
+                <input type="hidden" id="salt" value="{{ salt }}"/>
+                    <form method="POST" action="{{ url_for('login') }}" id="login-form">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="form-group">
                             <label class="small mb-1" for="input-username">ID</label>
@@ -29,4 +30,14 @@
         </div>
     </div>
 </div>
+<script>
+    let loginForm = document.getElementById("login-form");
+    const salt = document.getElementById("salt").value;
+    loginForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        let pwField = document.getElementById("input-password");
+        pwField.value = btoa(pwField.value + salt);
+        this.submit();
+    });
+</script>
 {% endblock %}
