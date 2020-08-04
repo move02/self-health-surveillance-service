@@ -1,8 +1,8 @@
 {% extends 'admin_layout.html' %}
 {% block content %}
-<h1 class="mt-4">관할지역 발생현황</h1>
+<h1 class="mt-4">감염 의심자 발생현황</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">발생현황 조회</li>
+    <li class="breadcrumb-item active">감염의심자</li>
 </ol>
 <div class="container">
     <div id="search-bar" class="row dflex">
@@ -12,7 +12,6 @@
                 <select name="search-criteria" id="search-criteria" class="form-control">
                     <option value="day" selected>일</option>
                     <option value="month">월</option>
-                    <option value="year">년</option>
                 </select>
             </div>
         </div>
@@ -36,82 +35,64 @@
             <button class="btn btn-primary" id="search" type="button">조회</button>
         </div>
     </div>
-    <table id="breakout-data" class="table">
+    <table id="suspecters-data" class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" rowspan="2">발생지역</th>
-                <th scope="col" rowspan="2">분석일자</th>
-                <th scope="col" rowspan="2">분석요청(단위 : 건)</th>
-                <th scope="col" colspan="5">분석결과 등급(단위 : 건)</th>
-            </tr>
-            <tr>
-                <th scope="col">매우 높음</th>
-                <th scope="col">높음</th>
-                <th scope="col">보통</th>
-                <th scope="col">낮음</th>
-                <th scope="col">매우 낮음</th>
+                <th scope="col">결과 등급</th>
+                <th scope="col">조회 일자</th>
+                <th scope="col">조회 일자 분석(단위 : 건)</th>
+                <th scope="col">비교일자</th>
+                <th scope="col">비교 일자 분석(단위 : 건)</th>
+                <th scope="col">비교 일자 대비(건수 / 비율)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-07-03</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row">매우 높음</th>
+                <td rowspan="5">2020-07-03</td>
+                <td>150</td>
+                <td rowspan="5">2020-07-01</td>
+                <td>13</td>
+                <td>+137 건 / +91.3%</td>
             </tr>
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-07-02</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row">높음</th>
+                
+                <td>30</td>
+                
+                <td>42</td>
+                <td>-12 건 / -40.0%</td>
             </tr>
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-07-01</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row">보통</th>
+                
+                <td>213</td>
+                
+                <td>150</td>
+                <td>+63 건 / +29.6%</td>
             </tr>
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-06-30</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row">낮음</th>
+                
+                <td>350</td>
+                
+                <td>111</td>
+                <td>+239 건 / +68.3%</td>
             </tr>
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-06-29</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row">매우 낮음</th>
+                
+                <td>421</td>
+                
+                <td>323</td>
+                <td>+09건 / +23.3%</td>
             </tr>
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-06-28</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row" colspan="2">합계</th>
+                <td>1164건</td>
+                <td></td>
+                <td>639건</td>
+                <td>+525 건 / +45.1%</td>
             </tr>
         </tbody>
     </table>
@@ -122,44 +103,46 @@ let criteria = criteriaField.value
 let searchFieldWrapper = document.getElementById("search-field-wrapper");
 
 let daySearchField = `
+<label class="small mb-1" for="input-search-date">조회일자</label>
 <div class="input-group date col" id="datetimepicker" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker"/>
+    <input type="text" class="form-control datetimepicker-input" name="input-search-date" data-target="#datetimepicker"/>
     <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
     </div>
 </div>
-
+<label class="small mb-1" for="input-comparand-date">비교일자</label>
 <div class="input-group date col" id="datetimepicker2" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker2"/>
+    <input type="text" class="form-control datetimepicker-input" name="input-comparand-date" data-target="#datetimepicker2"/>
     <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
     </div>
 </div>`;
 
-let monthSearchField = `<div class="input-group month col" id="datetimepicker" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker"/>
+let monthSearchField = `
+<label class="small mb-1" for="input-search-date">조회일자</label>
+<div class="input-group month col" id="datetimepicker" data-target-input="nearest">
+    <input type="text" class="form-control datetimepicker-input" name="input-search-date" data-target="#datetimepicker"/>
     <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
     </div>
-</div>`;
-
-let yearSearchField = `<div class="input-group date col" id="datetimepicker" data-target-input="nearest">
-    <select name="input-date" id="datetimepicker" class="form-control">
-        <option value="2019" selected>2019</option>
-        <option value="2020">2020</option>
-    </select>
+</div>
+<label class="small mb-1" for="input-comparand-date">비교일자</label>
+<div class="input-group month col" id="datetimepicker2" data-target-input="nearest">
+    <input type="text" class="form-control datetimepicker-input" name="input-comparand-date" data-target="#datetimepicker2"/>
+    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
 </div>`;
 
 function changeCriteria(criteria) {
     if(criteria === "day"){
         searchFieldWrapper.innerHTML = daySearchField;
         $('#datetimepicker').datetimepicker({ format: "YYYY/MM/DD", Default: true });
-        $('#datetimepicker2').datetimepicker({ format: "YYYY/MM/DD" });
+        $('#datetimepicker2').datetimepicker({ format: "YYYY/MM/DD", Default: true });
     } else if(criteria === "month"){
         searchFieldWrapper.innerHTML = monthSearchField;
         $('#datetimepicker').datetimepicker({ format: "YYYY/MM", Default: true });
-    } else if(criteria === "year"){
-        searchFieldWrapper.innerHTML = yearSearchField;
+        $('#datetimepicker2').datetimepicker({ format: "YYYY/MM", Default: true });
     }
 }
 
@@ -174,6 +157,6 @@ changeCriteria("day");
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 <script>
-    $("#breakout-data").DataTable();
+    $("#suspecters-data").DataTable();
 </script>
 {% endblock %}

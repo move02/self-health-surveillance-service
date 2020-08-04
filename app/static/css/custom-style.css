@@ -7,3 +7,11 @@
 .find-result {
     display: none;
 }
+
+.dataTables_wrapper{
+    font-size: 0.8rem;
+}
+
+td[rowspan] {
+    vertical-align: middle;
+}
