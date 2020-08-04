@@ -63,7 +63,7 @@ def find_or_create_user(username, email, password, realname, tel, is_confirmed=F
 
 def seeding():
     from dotenv import load_dotenv
-    
+
     current_env = os.environ.get("CURRENT_ENV")
     with current_app.app_context():
         if current_env != "Product": 
