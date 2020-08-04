@@ -137,8 +137,6 @@ def find():
         session['salt'] = salt
         areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
 
-        pdb.set_trace()
-
         return render_template("admin/password.html", areas=areas, salt=salt)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
