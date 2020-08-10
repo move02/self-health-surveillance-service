@@ -38,37 +38,49 @@
                                 <label class="small mb-1" for="input-institution">기관</label>
                                 <input class="form-control py-4" id="input-institution" name="input-institution" type="text" placeholder="소속기관을 입력하세요." required/>
                             </div>
+                            <div class="valid-feedback">ok</div>
+                            <div class="invalid-feedback">소속기관은 필수 입력사항입니다.</div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-department">부서</label>
                                 <input class="form-control py-4" id="input-department" name="input-department" type="text" placeholder="소속부서를 입력하세요." required/>
                             </div>
+                            <div class="valid-feedback">ok</div>
+                            <div class="invalid-feedback">소속부서는 필수 입력사항입니다.</div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="small mb-1" for="input-realname">성함</label>
-                        <input class="form-control py-4" id="input-realname" name="input-realname" type="text" placeholder="성함(본명)을 입력하세요." required/>
+                        <label class="small mb-1" for="input-realname">이름</label>
+                        <input class="form-control py-4" id="input-realname" name="input-realname" type="text" placeholder="이름(본명)을 입력하세요." required/>
                     </div>
+                    <div class="valid-feedback">ok</div>
+                    <div class="invalid-feedback">이름은 필수 입력사항입니다.</div>
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-email">Email</label>
                                 <input class="form-control py-4" id="input-email" name="input-email" type="email" placeholder="메일주소를 입력하세요." required/>
                             </div>
+                            <div class="valid-feedback">ok</div>
+                            <div class="invalid-feedback">올바른 메일 주소를 입력해주세요.</div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-tel">연락처</label>
                                 <input class="form-control py-4" id="input-tel" name="input-tel" type="tel" placeholder="직장 내 연락처를 입력하세요." required/>
                             </div>
+                            <div class="valid-feedback">ok</div>
+                            <div class="invalid-feedback">올바른 연락처를 입력해주세요.</div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="input-password">패스워드</label>
-                                <input class="form-control py-4" id="input-password" name="input-password" type="password" pattern="[0-9]{4}" required/>
+                                <input class="form-control py-4" id="input-password" name="input-password" type="password" pattern="[\w+]{4,}" required/>
+                                <div class="valid-feedback">ok</div>
+                                <div class="invalid-feedback">비밀번호는 네 자리 이상으로 지어야합니다.</div>
                             </div>
                         </div>
                         <div class="col-md-6">

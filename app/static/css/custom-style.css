@@ -12,6 +12,10 @@
     font-size: 0.8rem;
 }
 
+.dataTable{
+    font-size: 0.8rem;
+}
+
 td[rowspan] {
     vertical-align: middle;
 }

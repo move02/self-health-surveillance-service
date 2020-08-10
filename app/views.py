@@ -5,6 +5,7 @@ from .models.admin_models import Administrator
 from .models.common_models import CommonCode
 from flask_login import login_required, current_user, login_user, logout_user
 from .utils import is_safe_url, generate_random_salt, decode
+from .auth import confirm_required
 
 import pdb
 
@@ -16,11 +17,9 @@ def load_user(user_id):
 @app.route("/admin")
 @app.route("/admin/index")
 @login_required
+@confirm_required
 def index():
-    if current_user.is_confirmed:
-        return render_template("admin/index.html")
-    else:
-        return redirect(url_for("wait"))
+    return render_template("admin/index.html")
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def login():
@@ -83,7 +82,6 @@ def register():
             form_data = request.form
 
             # 사용자 정보들
-            #     def __init__(self, username, email, password, realname, tel=None, is_confirmed=False, authority=None, charge_area=None, institution=None, department=None):
             input_area = form_data.get("input-area")
             input_username = form_data.get("input-username")
             input_email = form_data.get("input-email")
@@ -221,18 +219,21 @@ def logout():
 
 @app.route("/admin/breakouts", methods=["GET"])
 @login_required
+@confirm_required
 def breakouts():
-    if current_user.is_confirmed:
-        # 확진자 분석결과 조회
-        return render_template("/admin/breakouts.html")
-    else:
-        return redirect(url_for('wait'))
+    # 관할지역 발생현황 조회
+    return render_template("/admin/breakouts.html")
 
 @app.route("/admin/suspecters", methods=["GET"])
 @login_required
+@confirm_required
 def suspecters():
-    if current_user.is_confirmed:
-        # 감염 의심자 발생현황 조회
-        return render_template("/admin/suspecters.html")
-    else:
-        return redirect(url_for('wait'))
+    # 감염 의심자 발생현황 조회
+    return render_template("/admin/suspecters.html")
+
+@app.route("/admin/user-locations", methods=["GET"])
+@login_required
+@confirm_required
+def user_locations():
+    # 정보동의자 동선조회
+    return render_template("/admin/user_locations.html")

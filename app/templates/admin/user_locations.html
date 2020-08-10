@@ -1,0 +1,100 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<h1 class="mt-4">정보동의자 동선</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">이용자 동선 조회</li>
+</ol>
+<div class="container">
+    <div id="search-bar" class="row dflex">
+        <div class="offset-4"></div>
+        <div class="col-2">
+            <div class="form-group">
+                <select name="search-criteria" id="search-criteria" class="form-control">
+                    <option value="null" selected>--선택안함--</option>
+                    <option value="very-high">매우 높음</option>
+                    <option value="high">높음</option>
+                    <option value="middle">보통</option>
+                    <option value="low">낮음</option>
+                    <option value="very-low">매우 낮음</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-5">
+            <div id="search-field-wrapper" class="input-group">
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" id="search" type="button">조회</button>
+        </div>
+    </div>
+    <table id="breakout-data" class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">순번</th>
+                <th scope="col">결과 등급</th>
+                <th scope="col">조회일시</th>
+                <th scope="col">연락처</th>
+                <th scope="col">성별</th>
+                <th scope="col">동선 수</th>
+                <th scope="col">동선 보기</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">5</th>
+                <td>매우 높음</td>
+                <td>2020-07-03</td>
+                <td>010-1234-5678</td>
+                <td>남</td>
+                <td>5</td>
+                <td><button class="btn btn-dark locations-button">보기</button></td>
+            </tr>
+            <tr>
+                <th scope="row">4</th>
+                <td>높음</td>
+                <td>2020-07-03</td>
+                <td>010-1234-5678</td>
+                <td>남</td>
+                <td>5</td>
+                <td><button class="btn btn-dark locations-button">보기</button></td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>보통</td>
+                <td>2020-07-03</td>
+                <td>010-1234-5678</td>
+                <td>남</td>
+                <td>5</td>
+                <td><button class="btn btn-dark locations-button">보기</button></td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>낮음</td>
+                <td>2020-07-03</td>
+                <td>010-1234-5678</td>
+                <td>남</td>
+                <td>5</td>
+                <td><button class="btn btn-dark locations-button">보기</button></td>
+            </tr>
+            <tr>
+                <th scope="row">1</th>
+                <td>매우 낮음</td>
+                <td>2020-07-03</td>
+                <td>010-1234-5678</td>
+                <td>남</td>
+                <td>5</td>
+                <td><button class="btn btn-dark locations-button">보기</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="/js/date_search_field.js"></script>
+<!-- DataTable -->
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script>
+    changeCriteria("day", "조회일자", "~");
+    $("#breakout-data").DataTable();
+</script>
+
+{% endblock %}

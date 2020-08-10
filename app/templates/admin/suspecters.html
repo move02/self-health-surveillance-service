@@ -9,7 +9,7 @@
         <div class="offset-5"></div>
         <div class="col-1">
             <div class="form-group">
-                <select name="search-criteria" id="search-criteria" class="form-control">
+                <select name="date-search-criteria" id="date-search-criteria" class="form-control">
                     <option value="day" selected>일</option>
                     <option value="month">월</option>
                 </select>
@@ -97,66 +97,14 @@
         </tbody>
     </table>
 </div>
-<script>
-let criteriaField = document.getElementById("search-criteria")
-let criteria = criteriaField.value
-let searchFieldWrapper = document.getElementById("search-field-wrapper");
-
-let daySearchField = `
-<label class="small mb-1" for="input-search-date">조회일자</label>
-<div class="input-group date col" id="datetimepicker" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-search-date" data-target="#datetimepicker"/>
-    <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-    </div>
-</div>
-<label class="small mb-1" for="input-comparand-date">비교일자</label>
-<div class="input-group date col" id="datetimepicker2" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-comparand-date" data-target="#datetimepicker2"/>
-    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-    </div>
-</div>`;
-
-let monthSearchField = `
-<label class="small mb-1" for="input-search-date">조회일자</label>
-<div class="input-group month col" id="datetimepicker" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-search-date" data-target="#datetimepicker"/>
-    <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-    </div>
-</div>
-<label class="small mb-1" for="input-comparand-date">비교일자</label>
-<div class="input-group month col" id="datetimepicker2" data-target-input="nearest">
-    <input type="text" class="form-control datetimepicker-input" name="input-comparand-date" data-target="#datetimepicker2"/>
-    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-    </div>
-</div>`;
-
-function changeCriteria(criteria) {
-    if(criteria === "day"){
-        searchFieldWrapper.innerHTML = daySearchField;
-        $('#datetimepicker').datetimepicker({ format: "YYYY/MM/DD", Default: true });
-        $('#datetimepicker2').datetimepicker({ format: "YYYY/MM/DD", Default: true });
-    } else if(criteria === "month"){
-        searchFieldWrapper.innerHTML = monthSearchField;
-        $('#datetimepicker').datetimepicker({ format: "YYYY/MM", Default: true });
-        $('#datetimepicker2').datetimepicker({ format: "YYYY/MM", Default: true });
-    }
-}
-
-criteriaField.addEventListener("change", function(){
-    changeCriteria(this.value);
-});
-changeCriteria("day");
-</script>
-
 <!-- DataTable -->
-
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 <script>
-    $("#suspecters-data").DataTable();
+    criteriaField.addEventListener("change", function(){
+        changeCriteria(this.value, "조회", "비교");
+    });
+    changeCriteria("day", "조회", "비교");
+    $("#breakout-data").DataTable();
 </script>
 {% endblock %}

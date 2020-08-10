@@ -1,4 +1,4 @@
-const passwordRegex = new RegExp("[0-9]{4}");
+const passwordRegex = new RegExp(/[\w]{4,}/g);
 var isUniqueId = false;
 var isPasswordValid = false;
 var isPasswordMatch = false;
