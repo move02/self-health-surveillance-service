@@ -1,4 +1,4 @@
-{% extends 'admin_layout.html' %}
+{% extends 'admin/admin_layout.html' %}
 {% block content %}
 <h1 class="mt-4">관할지역 발생현황</h1>
 <ol class="breadcrumb mb-4">
@@ -116,10 +116,14 @@
         </tbody>
     </table>
 </div>
+<script src="/js/date_search_field.js"></script>
 <!-- DataTable -->
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 <script>
+    criteriaField.addEventListener("change", function(){
+        changeCriteria(this.value, null, "~");
+    });
     changeCriteria("day", null, "~");
     $("#breakout-data").DataTable();
 </script>

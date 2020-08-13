@@ -25,6 +25,11 @@ csrf = CSRFProtect()
 login_manager = LoginManager()
 sess = Session()
 
+from .admin_views.general import general_view
+from .admin_views.login import login_view
+from .admin_views.main import main_view
+from .admin_views.system import system_view
+
 def create_app(config_class=Config):
     app = Flask(
         __name__,
@@ -35,9 +40,15 @@ def create_app(config_class=Config):
     app.register_error_handler(404, page_not_found)
     app.register_error_handler(500, internal_error)
 
+    ## Blueprint
+    app.register_blueprint(general_view, url_prefix="/admin")
+    app.register_blueprint(login_view, url_prefix="/admin/login")
+    app.register_blueprint(main_view, url_prefix="/admin")
+    app.register_blueprint(system_view, url_prefix="/system")
+
     ## login manager setting
-    login_manager.login_view = "login"
-    login_manager.register_view = "register"
+    login_manager.login_view = "login.login"
+    login_manager.register_view = "login.register"
     login_manager.login_message = None
 
     db.init_app(app)
@@ -87,7 +98,7 @@ else:
     raise EnvironmentError
 
 from app.models.admin_models import *
-from app import views
+from app import admin_views
 
 # from app.command import db_init
 # with app.app_context():

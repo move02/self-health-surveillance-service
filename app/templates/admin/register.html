@@ -1,4 +1,4 @@
-{% extends 'login_layout.html' %}
+{% extends 'admin/login_layout.html' %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -7,7 +7,7 @@
             <div class="card-header"><h3 class="text-center font-weight-light my-4">관리자 등록 신청</h3></div>
             <div class="card-body">
                 <input type="hidden" name="pw-salt" id="pw-salt" value="{{ salt }}">
-                <form class="needs-validation" action="{{ url_for('register') }}" method="POST" id="register-form" novalidate>
+                <form class="needs-validation" action="{{ url_for('login.register') }}" method="POST" id="register-form" novalidate>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <div class="form-group">
                         <label class="small mb-1" for="input-area">관할지역</label>
@@ -97,7 +97,7 @@
                 </form>
             </div>
             <div class="card-footer text-center">
-                <div class="small"><a href="{{ url_for('login') }}">이미 계정이 있다면 로그인하세요.</a></div>
+                <div class="small"><a href="{{ url_for('login.login') }}">이미 계정이 있다면 로그인하세요.</a></div>
             </div>
         </div>
     </div>

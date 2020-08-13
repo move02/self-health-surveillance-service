@@ -18,7 +18,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ url_for('index') }}">역학조사 시스템</a>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">역학조사 시스템</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar-->
             <ul class="navbar-nav ml-auto mr-md-0">
@@ -26,10 +26,13 @@
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="#">계정설정</a>
+                        {% if current_user.authority == "ALL" %}
+                        <a class="dropdown-item" href="{{ url_for('system.administrators') }}">계정관리</a>
+                        {% endif %}
                         <div class="dropdown-divider"></div>
-                        <form action="{{ url_for('logout') }}" method="POST">
+                        <form action="{{ url_for('login.logout') }}" method="POST">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            <button class="dropdown-item" type="submit" href="{{ url_for('logout') }}" id="logout-button">로그아웃</button>
+                            <button class="dropdown-item" type="submit" href="{{ url_for('login.logout') }}" id="logout-button">로그아웃</button>
                         </form>
                     </div>
                 </li>
@@ -41,21 +44,17 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">현황 조회</div>
-                            <a class="nav-link" href="{{ url_for('breakouts') }}">
+                            <a class="nav-link" href="{{ url_for('main.breakouts') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 관할지역 발생현황 조회
                             </a>
-                            <a class="nav-link" href="{{ url_for('suspecters') }}">
+                            <a class="nav-link" href="{{ url_for('main.suspecters') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 감염 의심자 발생 현황
                             </a>
-                            <a class="nav-link" href="{{ url_for('user_locations') }}">
+                            <a class="nav-link" href="{{ url_for('main.user_locations') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 정보동의자 동선 조회
-                            </a>                            
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                위치조회 현황
                             </a>
                             
                             <div class="sb-sidenav-menu-heading">기타 차트조회</div>

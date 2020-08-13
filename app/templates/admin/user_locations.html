@@ -1,4 +1,4 @@
-{% extends 'admin_layout.html' %}
+{% extends 'admin/admin_layout.html' %}
 {% block content %}
 <h1 class="mt-4">정보동의자 동선</h1>
 <ol class="breadcrumb mb-4">
@@ -27,7 +27,7 @@
             <button class="btn btn-primary" id="search" type="button">조회</button>
         </div>
     </div>
-    <table id="breakout-data" class="table">
+    <table id="location-data" class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">순번</th>
@@ -94,7 +94,7 @@
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 <script>
     changeCriteria("day", "조회일자", "~");
-    $("#breakout-data").DataTable();
+    $("#location-data").DataTable();
 </script>
 
 {% endblock %}

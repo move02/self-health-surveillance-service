@@ -1,33 +1,23 @@
 from datetime import datetime
-from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session
-from app import app, login_manager, db
-from .models.admin_models import Administrator
-from .models.common_models import CommonCode
+from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session, Blueprint
+from app import login_manager, db
+from ..models.admin_models import Administrator
+from ..models.common_models import CommonCode
 from flask_login import login_required, current_user, login_user, logout_user
-from .utils import is_safe_url, generate_random_salt, decode
-from .auth import confirm_required
+from ..utils import is_safe_url, generate_random_salt, decode
+from ..auth import confirm_required
 
-import pdb
+login_view = Blueprint("login", __name__, template_folder="templates/admin", static_folder="static")
 
-@login_manager.user_loader
-def load_user(user_id):
-    return Administrator.query.get(user_id)
+#=====================================로그인========================================
 
-#============================ 인덱스 ==============================
-@app.route("/admin")
-@app.route("/admin/index")
-@login_required
-@confirm_required
-def index():
-    return render_template("admin/index.html")
-
-@app.route("/admin/login", methods=["GET", "POST"])
+@login_view.route("/login", methods=["GET", "POST"])
 def login():
     if not current_user.is_authenticated:
         if request.method == "GET":
             salt = generate_random_salt()
             session['salt'] = salt
-            return render_template("admin/login.html", salt=salt)
+            return render_template("/admin/login.html", salt=salt)
         elif request.method == "POST":
             # 로그인 처리
             input_username = request.form["input-username"]
@@ -41,33 +31,23 @@ def login():
                 if user.check_password(input_password):
                     login_user(user)
                     flash("안녕하세요 {} 님".format(user.realname), "success")
+                    user.last_login = datetime.now
                     
                     if user.is_confirmed:
                         next = request.args.get('next')
                         if not is_safe_url(next, request):
                             return flask.abort(400)
 
-                        return redirect(next or url_for('index'))
+                        return redirect(next or url_for("main.index"))
                     else:
-                        return redirect(url_for("wait"))
+                        return redirect(url_for("general.wait"))
             
             flash("아이디 혹은 패스워드가 일치하지 않습니다.", "warning")
-    return redirect("/admin")
-
-@app.route("/admin/wait", methods=["GET"])
-@login_required
-def wait():
-    user = current_user
-    if user.is_confirmed:
-        flash("잘못된 접근입니다.", "warning")
-        return redirect(url_for("index"))
-    else:
-        return render_template("/admin/wait.html")
-
+    return redirect(url_for("login/login"))
 
 #===============================회원가입=====================================
 
-@app.route("/admin/register", methods=["GET", "POST"])
+@login_view.route("/register", methods=["GET", "POST"])
 def register():
     if not current_user.is_authenticated:
         if request.method == "GET":
@@ -76,7 +56,7 @@ def register():
             salt = generate_random_salt()
             session['salt'] = salt
 
-            return render_template("admin/register.html", areas=areas, salt=salt)
+            return render_template("/admin/register.html", areas=areas, salt=salt)
         elif request.method == "POST":
             # 등록신청 처리
             form_data = request.form
@@ -113,11 +93,11 @@ def register():
                 db.session.commit()
 
             flash("신청이 처리되었습니다.", "success")
-            return redirect("/admin/login")
+            return redirect(url_for("login.login"))
     else:
-        return redirect("/")
+        return redirect(url_for("main.index"))
 
-@app.route("/admin/check/username", methods=["POST"])
+@login_view.route("/check/username", methods=["POST"])
 def check_unique_username():
     input_username = request.get_json().get("input-username")
     result = True
@@ -128,19 +108,19 @@ def check_unique_username():
 
 #=========================================ID/PW 찾기====================================
 
-@app.route("/admin/find", methods=["GET"])
+@login_view.route("/find", methods=["GET"])
 def find():
     if not current_user.is_authenticated:
         salt = generate_random_salt()
         session['salt'] = salt
         areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
 
-        return render_template("admin/password.html", areas=areas, salt=salt)
+        return render_template("/admin/password.html", areas=areas, salt=salt)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
-@app.route("/admin/find/password", methods=["POST"])
+@login_view.route("/find/password", methods=["POST"])
 def find_password():
     if not current_user.is_authenticated:
         form_data = request.get_json(force=True)
@@ -159,9 +139,9 @@ def find_password():
             return jsonify(status=200, is_authenticated=False)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
-@app.route("/admin/find/username", methods=["POST"])
+@login_view.route("/find/username", methods=["POST"])
 def find_username():
     if not current_user.is_authenticated:
         form_data = request.get_json(force=True)
@@ -179,9 +159,9 @@ def find_username():
             return jsonify(status=200, username=None)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
-@app.route("/admin/change/password", methods=["POST"])
+@login_view.route("/change/password", methods=["POST"])
 def change_password():
     form_data = request.get_json(force=True)
     admin_id = form_data.get("pw-change-user-id")
@@ -202,38 +182,15 @@ def change_password():
     else:
         return jsonify(status=202, message="passwords are not same.")    
 
-#==================================================
+#===========================로그아웃=======================
 
-@app.route("/admin/logout", methods=["POST"])
+@login_view.route("/logout", methods=["POST"])
 @login_required
 def logout():
     if current_user.is_authenticated:
         logout_user()
         flash("로그아웃 되었습니다.", "info")
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     else:
         flash("올바른 접근이 아닙니다.", "warning")
-        return redirect(url_for('login'))
-
-#======================================================================
-
-@app.route("/admin/breakouts", methods=["GET"])
-@login_required
-@confirm_required
-def breakouts():
-    # 관할지역 발생현황 조회
-    return render_template("/admin/breakouts.html")
-
-@app.route("/admin/suspecters", methods=["GET"])
-@login_required
-@confirm_required
-def suspecters():
-    # 감염 의심자 발생현황 조회
-    return render_template("/admin/suspecters.html")
-
-@app.route("/admin/user-locations", methods=["GET"])
-@login_required
-@confirm_required
-def user_locations():
-    # 정보동의자 동선조회
-    return render_template("/admin/user_locations.html")
+        return redirect(url_for('login.login'))

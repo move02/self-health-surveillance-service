@@ -1,4 +1,4 @@
-{% extends 'admin_layout.html' %}
+{% extends 'admin/admin_layout.html' %}
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
@@ -6,7 +6,7 @@
             <div class="text-center mt-4">
                 <img class="mb-4 img-error" src="assets/img/error-404-monochrome.svg" />
                 <p class="lead">존재하지 않는 페이지입니다.</p>
-                <a href="{{ url_for('index') }}">
+                <a href="{{ url_for('main.index') }}">
                     <i class="fas fa-arrow-left mr-1"></i>
                     돌아가기
                 </a>

@@ -1,0 +1,91 @@
+{% extends 'admin/admin_layout.html' %}
+{% block content %}
+<h1 class="mt-4">관리자 계정관리</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">시스템 운영자 전용 기능</li>
+</ol>
+<div class="container">
+    <!-- <div id="search-bar" class="row dflex">
+        <div class="offset-4"></div>
+        <div class="col-5"></div>
+        <div class="col-2">
+            <div id="search-field-wrapper" class="input-group">
+                <div class="form-group">
+                    <input type="text" name="search-username" id="search-username"/>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" id="search" type="button">조회</button>
+        </div>
+    </div> -->
+    <table id="administrator-data" class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">순번</th>
+                <th scope="col">ID</th>
+                <th scope="col">이름</th>
+                <th scope="col">관할지역</th>
+                <th scope="col">기관</th>
+                <th scope="col">부서</th>
+                <th scope="col">연락처</th>
+                <th scope="col">신청일</th>
+                <th scope="col">승인</th>
+                <th scope="col">최근 접속</th>
+                <th scope="col">삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for admin in administrators %}
+            <tr data-username="{{ admin.username }}">
+                <td class="index"></td>
+                <td class="username">{{ admin.username }}</td>
+                <td class="realname">{{ admin.realname }}</td>
+                <td class="charge-area">{{ admin.charge_area }}</td>
+                <td class="institution">{{ admin.institution }}</td>
+                <td class="department">{{ admin.department }}</td>
+                <td class="tel">{{ admin.tel }}<br>{{ admin.email }}</td>
+                <td class="registered-date">{{ admin.registered_date }}</td>
+                <td class="confirm">
+                    {% if admin.is_confirmed %}
+                        {{ admin.confirmed_date }}
+                    {% else %}
+                        <button class="btn btn-primary confirm-button">승인</button>
+                    {% endif %}
+                </td>
+                <td class="last-login">{{ admin.last_login }}</td>
+                <td class="delete">
+                    {% if admin.is_deleted %}
+                        {{ admin.deleted_date }}
+                    {% else %}
+                        <button class="btn btn-secondary confirm-button">삭제</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="/js/date_search_field.js"></script>
+<!-- DataTable -->
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script>
+    let table = $("#administrator-data").DataTable( {
+        "columnDefs": [ {
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        } ],
+        "order": [[ 1, 'desc' ]]
+    } );
+
+    table.on( 'order.dt search.dt', function () {
+        table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
+
+</script>
+
+{% endblock %}
