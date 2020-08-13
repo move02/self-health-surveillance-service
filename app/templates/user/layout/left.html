@@ -1,0 +1,58 @@
+<div class="head_top_menu left">
+    <a class="logo_02" href="/map">
+      <img src="/user/images/logo.png" alt="Daumsoft Smart City Institute logo">
+    </a>
+    <a class="menu_button" title="menu">전체메뉴 열기<span></span></a>
+    <div class="nav_container">
+        <ul class="nav">
+            <li><a href="#">Self-검사</a>
+                <ul>
+                    <li><a href="/map">확진 확률 검사</a></li>
+                    <li><a href="javascript:;" id="loadUserInfo">기존 입력 동선 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#">감염병 시뮬레이션</a>
+                <ul>
+                    <li><a href="#">시설 전파 확산 시뮬레이션</a></li>
+                    <li><a href="#">지역 전파 확산 시뮬레이션</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div class="panel-overlay"></div>
+<aside class="left_meun">
+    <div class="head-top">
+        <div class="head-top-wrap">
+            <div class="head-top_01">
+                <div class="head_top_con">
+                    <a class="logo" href="/map">
+                      <img src="/user/images/logo.png" alt="Daumsoft Smart City Institute logo">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="search_lay">
+        <div class="search_box">
+            <div class="search-keyword">
+                <input type="text" id="searchKeyword" value="" title="검색어 입력" placeholder="장소를 검색해주세요" onkeydown="fnSearchKeydown(this, event);">
+                <button id="srchKeywordBttn" type="submit" onclick="srchSubmit();">검색하기</button>
+            </div>
+            <span class="result_num">조회결과 0건</span>
+        </div>
+        <!--<div class="search-wrap">
+            <p>방문하신 장소를 검색하여 경로를 완성해 보세요.<br>입력하신 경로와 감염병 관련 정보를 분석하여 감염 위험도를 측정합니다.</p>
+        </div>-->
+        <div class="search-result" style="height: 698px;">
+            <ul id="search-list">
+
+            </ul>
+        </div>
+    </div>
+    <div class="bottom">
+        <p>CopyrightⓒDaumsoft Corp. </p>
+    </div>
+</aside>

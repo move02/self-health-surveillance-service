@@ -10,25 +10,13 @@
         <div class="col-1">
             <div class="form-group">
                 <select name="date-search-criteria" id="date-search-criteria" class="form-control">
-                    <option value="day" selected>일</option>
+                    <option value="date" selected>일</option>
                     <option value="month">월</option>
                 </select>
             </div>
         </div>
         <div class="col-5">
             <div id="search-field-wrapper" class="input-group">
-                <div class="input-group date col" id="datetimepicker" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker"/>
-                    <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-                <div class="input-group date col" id="datetimepicker2" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker2"/>
-                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="col">
@@ -105,7 +93,7 @@
     criteriaField.addEventListener("change", function(){
         changeCriteria(this.value, "조회", "비교");
     });
-    changeCriteria("day", "조회", "비교");
+    changeCriteria("date", "조회", "비교");
     $("#suspecters-data").DataTable();
 </script>
 {% endblock %}

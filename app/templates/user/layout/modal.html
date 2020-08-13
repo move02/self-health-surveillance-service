@@ -1,0 +1,227 @@
+<div class="modal fade" id="analysisStModal" tabindex="-1" role="dialog" aria-labelledby="analysisStModalLabel" aria-hidden="true" backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="analysisStModalLabel">분석요청</h2>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="agree-comment">
+                    <h4>▶ 분석하신 경로 정보를 공유해 주세요.</h4>
+                    <div>
+                        경로 공유 시 서버에 저장되며, 거주중인 지역 지자체 관계자와 공유됩니다.
+                        또한 해당 경로를 토대로 다른 사용자의 경로 분석 기반 자료로 사용됩니다.
+                        취소할 경우 분석 결과만 출력되며 입력된 정보는 모두 삭제됩니다.
+                    </div>
+                </div>
+                <div class="agree-content">
+                    <div class="pl-2 pr-2 ml-2 agree-content-wrap">
+                        <div class="agree-content-title">수집목적 : </div>
+                        <div class="agree-content-comment">
+                            감염병 확산 방지를 위한 감염 위험도 분석 및 자자체와의 정보공유
+                        </div>
+                        <div class="agree-content-title">수집항목 : </div>
+                        <div class="agree-content-comment">
+                            성별, 연령대, 연락처, 거주지역, 이동경로, 이동경로 날짜 및 시간대
+                        </div>
+                        <div class="agree-content-title">수집대상 : </div>
+                        <div class="agree-content-comment">
+                            시스템 이용자 중 정보활용동의 대상자
+                        </div>
+                        <div class="agree-content-title">수집기관 : </div>
+                        <div class="agree-content-comment">
+                            (주)다음소프트
+                        </div>
+                        <div class="agree-content-title">수집기간 : </div>
+                        <div class="agree-content-comment">
+                            시스템 오픈일 ~ 0000년 00월 00일
+                        </div>
+                    </div>
+                </div>
+                <div class="agree-select">
+                    <label for="agreeY" class="agree-value">
+                        <input type="radio" id="agreeY" name="agree" value="Y" checked>동의
+                    </label>
+                    <label for="agreeN" class="agree-value">
+                        <input class="agree-value" id="agreeN" type="radio" name="agree" value="N">미동의
+                    </label>
+                </div>
+                <div class="user-info-form">
+                    <form id="userInfoMForm">
+                        <div class="row">
+                            <label class="col-md-4" for="reside_area">거주지역 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <select id="reside_area" name="reside_area" title="거주지역" class="form-control" required="true" >
+                                    <option value="">- 선택 -</option>
+                                    <option value="충청남도">충청남도</option>
+                                    <option value="세종">세종</option>
+                                    <option value="대전">대전</option>
+                                </select>
+                            </div>
+                            <label class="col-md-4" for="genderM">성별 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <label for="genderM">
+                                    <input id="genderM" name="sexdstn" title="성별" required="true" type="radio" value="M" checked>남자
+                                </label>
+                                <label for="genderF" style="padding-left: 5%;">
+                                    <input id="genderF"  name="sexdstn" title="성별" required="true" type="radio" value="F">여자
+                                </label>
+                            </div>
+                            <label class="col-md-4" for="agrde">연령대 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <select id="agrde" name="agrde" title="연령대" class="form-control" required="true" >
+                                    <option value="">- 선택 -</option>
+                                    <option value="10대 미만">10대 미만</option>
+                                    <option value="10대">10대</option>
+                                    <option value="20대">20대</option>
+                                    <option value="30대">30대</option>
+                                    <option value="40대">40대</option>
+                                    <option value="50대">50대</option>
+                                    <option value="60대">60대</option>
+                                    <option value="60대 이상">60대 이상</option>
+                                </select>
+                            </div>
+                            <label class="col-md-4" for="email">이메일 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <input id="email" name="email" title="이메일" class="form-control" required="true" type="text" value="" maxlength="20">
+                            </div>
+                            <label class="col-md-4" for="telno">연락처 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <input id="telno" name="telno" title="연락처" class="form-control" required="true" type="text" value="" maxlength="20">
+                            </div>
+                            <label class="col-md-4" for="password">비밀번호 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <input id="password" name="password" title="비밀번호" class="form-control" required="true" type="password" value="" maxlength="20">
+                            </div>
+                            <label class="col-md-4" for="passConfirm">비밀번호 확인 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <input id="passConfirm" name="passConfirm" title="비밀번호 확인" class="form-control" required="true" type="password" value="" maxlength="20">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="infoSave">저장</button>
+                <button type="button" class="btn btn-secondary" id="infoNonSave" data-dismiss="modal">취소</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- 기존 동선 조회 모달 -->
+<div class="modal fade" id="existingUserInfoModal" tabindex="-1" role="dialog" aria-labelledby="existingUserInfoModalLabel" aria-hidden="true" backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="existingUserInfoModalLabel">본인 확인</h2>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="user-info-form">
+                    <form id="e_userInfoForm">
+                        <div class="row">
+                            <label class="col-md-4" for="e_reside_area">거주지역 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <select id="e_reside_area" name="e_reside_area" title="거주지역" class="form-control" required="true">
+                                    <option value="">- 선택 -</option>
+                                    <option value="충청남도">충청남도</option>
+                                    <option value="세종">세종</option>
+                                    <option value="대전">대전</option>
+                                </select>
+                            </div>
+                            <label class="col-md-4" for="e_genderM">성별 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <label for="e_genderM">
+                                    <input id="e_genderM" name="e_sexdstn" title="성별" required="true" type="radio" value="M" checked>남자
+                                </label>
+                                <label for="e_genderF" style="padding-left: 5%;">
+                                    <input id="e_genderF"  name="e_sexdstn" title="성별" required="true" type="radio" value="F">여자
+                                </label>
+                            </div>
+                            <label class="col-md-4" for="e_agrde">연령대 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <select id="e_agrde" name="e_agrde" title="연령대" class="form-control" required="true" >
+                                    <option value="">- 선택 -</option>
+                                    <option value="10대 미만">10대 미만</option>
+                                    <option value="10대">10대</option>
+                                    <option value="20대">20대</option>
+                                    <option value="30대">30대</option>
+                                    <option value="40대">40대</option>
+                                    <option value="50대">50대</option>
+                                    <option value="60대">60대</option>
+                                    <option value="60대 이상">60대 이상</option>
+                                </select>
+                            </div>
+                            <label class="col-md-4" for="e_email">이메일 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <input id="e_email" name="e_email" title="이메일" class="form-control" required="true" type="text" value="" maxlength="20">
+                            </div>
+                            <label class="col-md-4" for="e_password">비밀번호 <span class="pil">[필수]</span></label>
+                            <div class="col-md-8">
+                                <input id="e_password" name="e_password" title="비밀번호" class="form-control" required="true" type="password" value="" maxlength="20">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="e_infoLoad">불러오기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 기존 동선 분석 요청 이력 테이블 모달 -->
+<div class="modal fade" id="userAnalysisInfoModal" tabindex="-1" role="dialog" aria-labelledby="userAnalysisInfoModalLabel" aria-hidden="true" backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="userAnalysisInfoModalLabel">분석 요청 이력</h2>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <table class="table">
+                    <caption class="sr-only">기존 동선 분석 요청 이력 테이블 : 순번, 방문기준일, 요청일, 분석 결과</caption>
+                    <colgroup>
+                        <col width="15%"/>
+                        <col width="25%"/>
+                        <col width="25%"/>
+                        <col width="auto"/>
+                    </colgroup>
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th scope="col">순번</th>
+                            <th scope="col">방문 기준일</th>
+                            <th scope="col">요청일</th>
+                            <th scope="col">분석 결과</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

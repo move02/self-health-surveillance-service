@@ -10,7 +10,7 @@
         <div class="col-1">
             <div class="form-group">
                 <select name="date-search-criteria" id="date-search-criteria" class="form-control">
-                    <option value="day" selected>일</option>
+                    <option value="date" selected>일</option>
                     <option value="month">월</option>
                     <option value="year">년</option>
                 </select>
@@ -18,18 +18,7 @@
         </div>
         <div class="col-5">
             <div id="search-field-wrapper" class="input-group">
-                <div class="input-group date col" id="datetimepicker" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker"/>
-                    <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-                <div class="input-group date col" id="datetimepicker2" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="input-date" data-target="#datetimepicker2"/>
-                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="col">
@@ -122,9 +111,9 @@
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 <script>
     criteriaField.addEventListener("change", function(){
-        changeCriteria(this.value, null, "~");
+        changeCriteria(this.value, "", "~");
     });
-    changeCriteria("day", null, "~");
+    changeCriteria("date", "", "~");
     $("#breakout-data").DataTable();
 </script>
 {% endblock %}

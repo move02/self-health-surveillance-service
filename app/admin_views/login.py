@@ -11,7 +11,7 @@ login_view = Blueprint("login", __name__, template_folder="templates/admin", sta
 
 #=====================================로그인========================================
 
-@login_view.route("/login", methods=["GET", "POST"])
+@login_view.route("/", methods=["GET", "POST"])
 def login():
     if not current_user.is_authenticated:
         if request.method == "GET":
@@ -31,7 +31,10 @@ def login():
                 if user.check_password(input_password):
                     login_user(user)
                     flash("안녕하세요 {} 님".format(user.realname), "success")
-                    user.last_login = datetime.now
+                    user.last_login = datetime.now()
+                    
+                    db.session.add(user)
+                    db.session.commit()
                     
                     if user.is_confirmed:
                         next = request.args.get('next')

@@ -1,0 +1,42 @@
+{% extends "user/layout/layout.html" %}
+{% block content %}
+    <div class="map">
+        <span class="sr-only">지도부분</span>
+        <!-- body -->
+        <div id="mainMap" style="width:100%; height:100%;"></div>
+        <div id="pick_wrap">
+            <div class="distance">
+                <div><h2>이동동선</h2></div>
+                <div class="pick_wrap_title">
+                    <span>방문기준일</span>
+                    <input type="date" id="baseDate" min="2020-01-20">
+                </div>
+                <div id="userPickPlaceList">
+                    <ul id="dateTabs" class="nav nav-pills" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="pill" href="#tabs1">1일차</a>
+                        </li>
+                        <li class="nav-item addTabLi">
+                            <a id="addTabs" class="nav_add" href="javascript:;">+</a>
+                        </li>
+                    </ul>
+                    <div id="dateTab-content" class="tab-content">
+                        <div id="tabs1" class="container tab-pane active">
+                            <div class="distance_result">
+                                <ul>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pick_wrap_footer">
+                <button class="btn btn-primary analysisSt">분석요청</button>
+                <button class="btn btn-danger analysisCl">취소</button>
+            </div>
+        </div>
+        <!-- body end -->
+    </div>
+{% endblock %}

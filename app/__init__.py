@@ -12,6 +12,7 @@ from flask_session import Session
 
 from config import *
 from dotenv import load_dotenv
+from flask_bcrypt import Bcrypt #암호화
 
 import json
 from .error_handlers import *
@@ -23,6 +24,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
 login_manager = LoginManager()
+bcrypt = Bcrypt()
 sess = Session()
 
 from .admin_views.general import general_view
@@ -56,6 +58,9 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     sess.init_app(app)
+
+    #암호화
+    bcrypt.init_app(app)
 
     CORS(app, resources={r'*': {'origins': 'http://localhost:5000'}})
 
@@ -99,6 +104,7 @@ else:
 
 from app.models.admin_models import *
 from app import admin_views
+from app import userViews
 
 # from app.command import db_init
 # with app.app_context():
