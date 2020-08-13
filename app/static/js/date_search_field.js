@@ -31,8 +31,8 @@ function changeCriteria(criteria, label1, label2) {
     if(criteria === "year"){
         searchFieldWrapper.innerHTML = yearSearchField;
     } else{
-        searchFieldString += (searchField1.replace("{criteria}", criteria) + labelElement1.replace("{label1}", label1));
-        searchFieldString += (searchField2.replace("{criteria}", criteria) + labelElement2.replace("{label2}", label2));
+        searchFieldString += (labelElement1.replace("{label1}", label1) + searchField1.replace("{criteria}", criteria));
+        searchFieldString += (labelElement2.replace("{label2}", label2) + searchField2.replace("{criteria}", criteria));
         searchFieldWrapper.innerHTML = searchFieldString;
     }
 }

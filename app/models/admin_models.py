@@ -8,6 +8,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from flask_login import UserMixin
 from .common_models import CommonCode
+from functools import wraps
 
 from dotenv import load_dotenv
 
@@ -90,18 +91,30 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
 
     # NotNull Decorator
     def not_null(func):
-        def wrapper(*args, **kwargs):
+        @wraps(func)
+        def decorator(*args, **kwargs):
             if not args[-1]:
-                raise AssertionError("{} is not nullable".format(args[-1].__name__))
+                raise AssertionError("{} is not nullable".format(args[1]))
             return func(*args, **kwargs)
+        return decorator
+        
+    # Length Decorator
+    def length(limit):
+        def wrapper(func):
+            @wraps(func)
+            def decorator(*args, **kwargs):
+                pdb.set_trace()
+                if len(args[-1]) > limit:
+                    raise AssertionError("{} 필드 길이제한 : {}".format(args[1], limit))
+                return func(*args, **kwargs)
+            return decorator
         return wrapper
 
     # Validators
     @validates('username')
     @not_null
+    @length(30)
     def validate_username(self, key, username):
-        if len(username) > 30:
-            raise AssertionError("Username must be less than 30 characaters")
         if Administrator.query.filter(Administrator.username == username).first():
             raise AssertionError("Username is already in use")
 
@@ -109,51 +122,41 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     
     @validates('realname')
     @not_null
-    def validate_realname(self, key, realname):
-        if len(realname) > 100:
-            raise AssertionError("Realname must be less than 100 characaters")
-        
+    @length(100)
+    def validate_realname(self, key, realname):        
         return realname
     
     @validates('email')
     @not_null
+    @length(30)
     def validate_email(self, key, email):
-        if len(email) > 30:
-            raise AssertionError("Email must be less than 50 characaters")
         if Administrator.query.filter(Administrator.email == email).first():
             raise AssertionError("Email is already in use")
 
         return email
 
     @validates('tel')
-    def validate_tel(self, key, tel):
-        if len(tel) > 15:
-            raise AssertionError("Tel must be less than 15 characaters")
-        
+    @length(15)
+    def validate_tel(self, key, tel):        
         return tel
 
     @validates('charge_area')
     @not_null
+    @length(15)
     def validate_charge_area(self, key, charge_area):
         area_group_code = os.environ.get("AREA_CODE_GROUP")
-        if len(charge_area) > 15:
-            raise AssertionError("Charge Area must be less than 15 characaters")
         if CommonCode.query.filter_by(group_code=area_group_code, code=charge_area).count() < 1:
             raise AssertionError("There is no area code like {}.{}".format(area_group_code, charge_area))
 
         return charge_area
 
     @validates('institution')
+    @length(100)
     def validate_institution(self, key, institution):
-        if len(institution) > 100:
-            raise AssertionError("Institution must be less than 100 characaters")
-
         return institution
 
     @validates('deptartment')
+    @length(100)
     def validate_institution(self, key, department):
-        if len(department) > 100:
-            raise AssertionError("Department must be less than 100 characaters")
-
         return department
         
