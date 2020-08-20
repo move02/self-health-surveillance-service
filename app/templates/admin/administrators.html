@@ -45,20 +45,30 @@
                 <td class="institution">{{ admin.institution }}</td>
                 <td class="department">{{ admin.department }}</td>
                 <td class="tel">{{ admin.tel }}<br>{{ admin.email }}</td>
-                <td class="registered-date">{{ admin.registered_date }}</td>
+                <td class="registered-date">{{ admin.registered_date|format_datetime }}</td>
                 <td class="confirm">
                     {% if admin.is_confirmed %}
-                        {{ admin.confirmed_date }}
+                        {{ admin.confirmed_date|format_datetime }}
                     {% else %}
-                        <button class="btn btn-primary confirm-button">승인</button>
+                        <form action="{{ url_for('system.approve') }}" method="post" class="change-user-status">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <input type="hidden" name="input-username" value="{{ admin.username }}">
+                            <button class="btn btn-sm btn-primary confirm-button">승인</button>
+                        </form>
                     {% endif %}
                 </td>
-                <td class="last-login">{{ admin.last_login }}</td>
+                <td class="last-login">{{ admin.last_login|format_datetime }}</td>
                 <td class="delete">
                     {% if admin.is_deleted %}
-                        {{ admin.deleted_date }}
+                        {{ admin.deleted_date|format_datetime }}
                     {% else %}
-                        <button class="btn btn-secondary confirm-button">삭제</button>
+                        <form action="{{ url_for('system.delete') }}" method="post" class="change-user-status">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <input type="hidden" name="input-username" value="{{ admin.username }}">
+                            <button class="btn btn-sm btn-secondary confirm-button">삭제</button>
+                        </form>
                     {% endif %}
                 </td>
             </tr>
@@ -85,7 +95,24 @@
             cell.innerHTML = i+1;
         } );
     } ).draw();
+</script>
+<script>
+    let forms = $("form.change-user-status");
+    forms.submit(function(e){
+        e.preventDefault();
+        let confirmMessage = "";
+        
+        if(this._method == "put"){
+            confirmMessage = "승인하시겠습니까?";
+        } else {
+            confirmMessage = "삭제처리 하시겠습니까?";
+        }
 
+        let answer = confirm(confirmMessage);
+        if(answer){
+            this.submit();
+        }
+    });
 </script>
 
 {% endblock %}

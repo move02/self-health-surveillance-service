@@ -105,8 +105,4 @@ else:
 from app.models.admin_models import *
 from app import admin_views
 from app import userViews
-
-# from app.command import db_init
-# with app.app_context():
-#     db.init_app(app)
-#     # db_init.init_db()
+from app import utils

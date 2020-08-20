@@ -22,3 +22,19 @@ def wait():
         return redirect(url_for(request.referrer))
     else:
         return render_template("/admin/wait.html")
+
+##===============template filters===============
+
+@general_view.app_template_filter()
+def format_datetime(value, format='basic'):
+    if value:
+        delta = datetime.now() - value
+        if delta.seconds < 3600:
+            return "{}분 전".format(delta.seconds // 60)
+        elif delta.seconds < 86399:
+            return "{}시간 전".format(delta.seconds // 3600)
+        else:
+            format = "%Y. %m. %d %H:%M"
+            return value.strftime(format)
+    else:
+        return ""

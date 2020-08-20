@@ -72,16 +72,26 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
 
     # 시스템 관리자(상위관리자 기능)
     def confirm_user(self, target_user):
-        target_user.is_confirmed = True
-        target_user.confirmed_user = self
-        target_user.confirmed_date = datetime.now()
-        return target_user
+        if self.authority == "ALL":
+            target_user.is_confirmed = True
+            target_user.confirmed_user = self.username
+            target_user.confirmed_date = datetime.now()
+            db.session.add(target_user)
+            db.session.commit()
+            return target_user
+        else:
+            return None
 
     def delete_user(self, target_user):
-        target_user.is_deleted = True
-        target_user.deleted_user = self
-        target_user.deleted_date = datetime.now()
-        return target_user
+        if self.authority == "ALL":
+            target_user.is_deleted = True
+            target_user.deleted_user = self.username
+            target_user.deleted_date = datetime.now()
+            db.session.add(target_user)
+            db.session.commit()
+            return target_user
+        else:
+            return None
 
     # 정보 업데이트
     def update(self, **kwargs):

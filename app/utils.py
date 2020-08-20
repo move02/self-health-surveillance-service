@@ -1,6 +1,6 @@
 from urllib.parse import urlparse, urljoin
 from flask import request
-import random
+import random, datetime
 import base64
 import pdb
 
@@ -21,7 +21,6 @@ def generate_random_salt():
 
 def decode(encoded, salt):
     decoded = base64.b64decode(encoded.encode("UTF-8")).decode("UTF-8")
-    # pdb.set_trace()
     if str(salt) in decoded:
         return decoded[0:len(decoded) - len(str(salt))]
     return None
