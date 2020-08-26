@@ -34,17 +34,3 @@ class CommonCode(db.Model, SerializerMixin):
     def __repr__(self):
         return '<Group {} / Code : {} / Value : {} / DC : {}>'.format(self.group_code, self.code, self.code_value, self.code_desc)
 
-    @staticmethod
-    def get_object_from_code(code):
-        ## code 필드가 유니크라는 전제
-        return CommonCode.query.filter_by(code=code).first()
-    
-    ## 지역 코드그룹에서 표준코드(00, 11 등)으로 객체 가져오기
-    @staticmethod
-    def get_area_from_value(code_value):
-        return CommonCode.query.filter_by(group_code=area_group_code, code_value=code_value).first()
- 
-    ## 모든 지역 가져오기
-    @staticmethod
-    def get_all_areas():
-        return CommonCode.query.filter_by(group_code=area_group_code).all()

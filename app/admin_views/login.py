@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session, Blueprint
-from app import login_manager, db
+from app import login_manager, db, area_group_code, sex_group_code, age_group_code, risk_group_code
 from ..models.admin_models import Administrator
 from ..models.common_models import CommonCode
 from flask_login import login_required, current_user, login_user, logout_user
@@ -47,6 +47,8 @@ def login():
                         return redirect(url_for("general.wait"))
             
             flash("아이디 혹은 패스워드가 일치하지 않습니다.", "warning")
+        else:
+            return redirect(url_for("main.index"))
     return redirect(url_for("login.login"))
 
 #===============================회원가입=====================================
@@ -55,7 +57,7 @@ def login():
 def register():
     if not current_user.is_authenticated:
         if request.method == "GET":
-            areas = CommonCode.get_all_areas()
+            areas = CommonCode.query.filter_by(group_code=area_group_code).all()
 
             salt = generate_random_salt()
             session['salt'] = salt
@@ -67,7 +69,7 @@ def register():
 
             # 사용자 정보들
             input_area_value = form_data.get("input-area")
-            input_area = CommonCode.get_area_from_value(input_area_value)
+            input_area = CommonCode.query.filter_by(group_code=area_group_code, code_value=input_area_value).first()
 
             input_username = form_data.get("input-username")
             input_email = form_data.get("input-email")
@@ -121,7 +123,7 @@ def find():
     if not current_user.is_authenticated:
         salt = generate_random_salt()
         session['salt'] = salt
-        areas = CommonCode.get_all_areas()
+        areas = CommonCode.query.filter_by(group_code=area_group_code)
 
         return render_template("/admin/find.html", areas=areas, salt=salt)
     else:
@@ -137,7 +139,7 @@ def find_password():
         input_email = form_data.get("input-email-address-2")
         
         if input_area_value != "":
-            input_area = CommonCode.get_area_from_value(input_area_value)
+            input_area = CommonCode.query.filter_by(group_code=area_group_code, code_value=input_area_value).first()
             query_result = Administrator.query.filter_by(charge_area=input_area.code, username=input_username, email=input_email)
         else:
             query_result = Administrator.query.filter_by(username=input_username, email=input_email)
@@ -158,7 +160,7 @@ def find_username():
         input_email = form_data.get("input-email-address-1")
 
         if input_area_value != "":
-            input_area = CommonCode.get_area_from_value(input_area_value)
+            input_area = CommonCode.query.filter_by(group_code=area_group_code, code_value=input_area_value).first()
             query_result = Administrator.query.filter_by(charge_area=input_area.code, email=input_email)
         else:
             query_result = Administrator.query.filter_by(email=input_email)

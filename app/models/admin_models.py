@@ -1,9 +1,8 @@
 from datetime import datetime, timedelta
 import json
 import os
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app, url_for
-from app import db
+from app import db, bcrypt
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from flask_login import UserMixin
@@ -61,10 +60,10 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
         return '<User {} / name : {}>'.format(self.username, self.realname)
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = bcrypt.generate_password_hash(password, 10).decode('utf-8')
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     # UserMixin 클래스 메소드 오버라이드
     def get_id(self):

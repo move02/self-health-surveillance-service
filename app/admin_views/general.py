@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session, Blueprint
-from app import login_manager, db
+from app import login_manager, db, area_group_code, sex_group_code, age_group_code, risk_group_code
 from ..models.admin_models import Administrator
 from ..models.common_models import CommonCode
 from flask_login import login_required, current_user, login_user, logout_user
@@ -42,7 +42,7 @@ def format_datetime(value, format='basic'):
 
 @general_view.app_template_filter()
 def code_description(code):
-    code_object = CommonCode.get_object_from_code(code)
+    code_object = CommonCode.query.filter_by(code=code).first()
     if code_object:
         return code_object.code_desc
     else:

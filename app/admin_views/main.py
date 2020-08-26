@@ -1,8 +1,10 @@
 from datetime import datetime
 from flask import Flask, jsonify, redirect, render_template, request, flash, url_for, session, Blueprint
-from app import login_manager, db
+from app import login_manager, db, area_group_code, sex_group_code, age_group_code, risk_group_code
 from ..models.admin_models import Administrator
 from ..models.common_models import CommonCode
+from ..models.user.userInfo import *
+from ..models.user.placeInfo import *
 from flask_login import login_required, current_user, login_user, logout_user
 from ..utils import is_safe_url, generate_random_salt, decode
 from ..auth import confirm_required
@@ -35,4 +37,8 @@ def suspecters():
 @confirm_required
 def user_locations():
     # 정보동의자 동선조회
+    allowed_area = CommonCode.get_area_from_value(current_user.charge_area)
+    risk_levels = CommonCode
+
+
     return render_template("/admin/user_locations.html")

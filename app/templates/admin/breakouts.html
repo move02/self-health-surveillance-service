@@ -114,6 +114,10 @@
         changeCriteria(this.value, "", "~");
     });
     changeCriteria("date", "", "~");
-    $("#breakout-data").DataTable();
+    $("#breakout-data").DataTable({
+        searching: false,
+        paging: true,
+        info: false
+    });
 </script>
 {% endblock %}

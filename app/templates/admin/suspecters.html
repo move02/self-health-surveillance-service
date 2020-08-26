@@ -94,6 +94,11 @@
         changeCriteria(this.value, "조회", "비교");
     });
     changeCriteria("date", "조회", "비교");
-    $("#suspecters-data").DataTable();
+    
+    $("#suspecters-data").DataTable({
+        searching: false,
+        paging: true,
+        info: false
+    });
 </script>
 {% endblock %}

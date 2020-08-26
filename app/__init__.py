@@ -109,3 +109,8 @@ from app.models.user.userInfo import *
 from app import admin_views
 from app import userViews
 from app import utils
+
+area_group_code = os.environ.get("AREA_GROUP_CODE")
+sex_group_code = os.environ.get("SEX_GROUP_CODE")
+age_group_coode = os.environ.get("AGE_GROUP_CODE")
+risk_group_code = os.environ.get("RISK_GROUP_CODE")
