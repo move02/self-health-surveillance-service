@@ -19,6 +19,6 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 if __name__ == "__main__":
     app = create_app(HerokuDevelopConfig)
-    with app.app_context():
-        init_db()
+    # with app.app_context():
+    #     init_db()
 

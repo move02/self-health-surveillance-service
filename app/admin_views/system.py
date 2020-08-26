@@ -18,7 +18,7 @@ system_view = Blueprint("system", __name__, template_folder="templates/admin", s
 def administrators():
     # 관리자 계정 관리
     if current_user.authority == "ALL":
-        administrators = Administrator.query.all()
+        administrators = Administrator.query.order_by(Administrator.registered_date.desc()).all()
         return render_template("/admin/administrators.html", administrators=administrators)
     else:
         flash("접근 권한이 없습니다.", "warning")

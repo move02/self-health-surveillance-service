@@ -22,7 +22,7 @@ class ProductConfig(Config):
         'PORT' : os.environ.get("DB_PORT"),
         'SCHEMA' : os.environ.get("DB_SCHEMA")
     }
-    SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{DATABASE['USERNAME']}:{DATABASE['PASSWORD']}@{DATABASE['HOST']}/{DATABASE['SCHEMA']}"
+    SQLALCHEMY_DATABASE_URI = f"mysql+mysqldb://{DATABASE['USERNAME']}:{DATABASE['PASSWORD']}@{DATABASE['HOST']}:{DATABASE['PORT']}/{DATABASE['SCHEMA']}"
 
 class TestConfig(Config):
     TESTING = True

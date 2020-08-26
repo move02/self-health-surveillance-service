@@ -6,6 +6,7 @@ from ..models.common_models import CommonCode
 from flask_login import login_required, current_user, login_user, logout_user
 from ..utils import is_safe_url, generate_random_salt, decode
 from ..auth import confirm_required
+import os
 
 login_view = Blueprint("login", __name__, template_folder="templates/admin", static_folder="static")
 
@@ -46,7 +47,7 @@ def login():
                         return redirect(url_for("general.wait"))
             
             flash("아이디 혹은 패스워드가 일치하지 않습니다.", "warning")
-    return redirect(url_for("login/login"))
+    return redirect(url_for("login.login"))
 
 #===============================회원가입=====================================
 
@@ -54,7 +55,7 @@ def login():
 def register():
     if not current_user.is_authenticated:
         if request.method == "GET":
-            areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
+            areas = CommonCode.get_all_areas()
 
             salt = generate_random_salt()
             session['salt'] = salt
@@ -65,7 +66,9 @@ def register():
             form_data = request.form
 
             # 사용자 정보들
-            input_area = form_data.get("input-area")
+            input_area_value = form_data.get("input-area")
+            input_area = CommonCode.get_area_from_value(input_area_value)
+
             input_username = form_data.get("input-username")
             input_email = form_data.get("input-email")
             input_password = form_data.get("input-password")
@@ -87,10 +90,12 @@ def register():
                     email=input_email,
                     password=input_password,
                     is_confirmed=False,
-                    charge_area=input_area,
+                    charge_area=input_area.code,
                     institution=input_institution,
                     department=input_department
                 )
+
+                new_admin.registered_date = datetime.now()
 
                 db.session.add(new_admin)
                 db.session.commit()
@@ -116,9 +121,9 @@ def find():
     if not current_user.is_authenticated:
         salt = generate_random_salt()
         session['salt'] = salt
-        areas = CommonCode.query.filter_by(group_code="AREA_CODE").all()
+        areas = CommonCode.get_all_areas()
 
-        return render_template("/admin/password.html", areas=areas, salt=salt)
+        return render_template("/admin/find.html", areas=areas, salt=salt)
     else:
         flash("올바른 접근이 아닙니다.", "warning")
         return redirect(url_for('main.index'))
@@ -127,12 +132,13 @@ def find():
 def find_password():
     if not current_user.is_authenticated:
         form_data = request.get_json(force=True)
-        input_area = form_data.get("input-area-2")
+        input_area_value = form_data.get("input-area-2")
         input_username = form_data.get("input-username")
         input_email = form_data.get("input-email-address-2")
         
-        if input_area != "":
-            query_result = Administrator.query.filter_by(charge_area=input_area, username=input_username, email=input_email)
+        if input_area_value != "":
+            input_area = CommonCode.get_area_from_value(input_area_value)
+            query_result = Administrator.query.filter_by(charge_area=input_area.code, username=input_username, email=input_email)
         else:
             query_result = Administrator.query.filter_by(username=input_username, email=input_email)
         if query_result.count() != 0:
@@ -148,11 +154,12 @@ def find_password():
 def find_username():
     if not current_user.is_authenticated:
         form_data = request.get_json(force=True)
-        input_area = form_data.get("input-area-1")
+        input_area_value = form_data.get("input-area-1")
         input_email = form_data.get("input-email-address-1")
 
-        if input_area != "":
-            query_result = Administrator.query.filter_by(charge_area=input_area, email=input_email)
+        if input_area_value != "":
+            input_area = CommonCode.get_area_from_value(input_area_value)
+            query_result = Administrator.query.filter_by(charge_area=input_area.code, email=input_email)
         else:
             query_result = Administrator.query.filter_by(email=input_email)
         if query_result.count() != 0:

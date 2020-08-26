@@ -41,34 +41,38 @@
                 <td class="index"></td>
                 <td class="username">{{ admin.username }}</td>
                 <td class="realname">{{ admin.realname }}</td>
-                <td class="charge-area">{{ admin.charge_area }}</td>
+                <td class="charge-area">{{ admin.charge_area|code_description }}</td>
                 <td class="institution">{{ admin.institution }}</td>
                 <td class="department">{{ admin.department }}</td>
                 <td class="tel">{{ admin.tel }}<br>{{ admin.email }}</td>
                 <td class="registered-date">{{ admin.registered_date|format_datetime }}</td>
                 <td class="confirm">
-                    {% if admin.is_confirmed %}
-                        {{ admin.confirmed_date|format_datetime }}
-                    {% else %}
-                        <form action="{{ url_for('system.approve') }}" method="post" class="change-user-status">
-                            <input type="hidden" name="_method" value="put">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            <input type="hidden" name="input-username" value="{{ admin.username }}">
-                            <button class="btn btn-sm btn-primary confirm-button">승인</button>
-                        </form>
+                    {% if admin.authority != "ALL" %}
+                        {% if admin.is_confirmed %}
+                            {{ admin.confirmed_date|format_datetime }}
+                        {% else %}
+                            <form action="{{ url_for('system.approve') }}" method="post" class="change-user-status">
+                                <input type="hidden" name="_method" value="put">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <input type="hidden" name="input-username" value="{{ admin.username }}">
+                                <button class="btn btn-sm btn-primary confirm-button">승인</button>
+                            </form>
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td class="last-login">{{ admin.last_login|format_datetime }}</td>
                 <td class="delete">
-                    {% if admin.is_deleted %}
-                        {{ admin.deleted_date|format_datetime }}
-                    {% else %}
-                        <form action="{{ url_for('system.delete') }}" method="post" class="change-user-status">
-                            <input type="hidden" name="_method" value="delete">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            <input type="hidden" name="input-username" value="{{ admin.username }}">
-                            <button class="btn btn-sm btn-secondary confirm-button">삭제</button>
-                        </form>
+                    {% if admin.authority != "ALL" %}
+                        {% if admin.is_deleted %}
+                            {{ admin.deleted_date|format_datetime }}
+                        {% else %}
+                            <form action="{{ url_for('system.delete') }}" method="post" class="change-user-status">
+                                <input type="hidden" name="_method" value="delete">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <input type="hidden" name="input-username" value="{{ admin.username }}">
+                                <button class="btn btn-sm btn-secondary confirm-button">삭제</button>
+                            </form>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>

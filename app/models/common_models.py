@@ -5,8 +5,10 @@ from flask import current_app, url_for
 from app import db
 from sqlalchemy_serializer import SerializerMixin
 
+area_group_code = os.environ.get("AREA_GROUP_CODE")
+
 class CommonCode(db.Model, SerializerMixin):
-    __tablename__="T_COMCODE_M01"
+    __tablename__="t_comcode_m01"
     __table_args__={'mysql_collate': 'utf8_general_ci'}
 
     group_code = db.Column("GROUP_CODE", db.String(30), index=True, primary_key=True)
@@ -30,9 +32,19 @@ class CommonCode(db.Model, SerializerMixin):
         self.rm_3 = rm_3
 
     def __repr__(self):
-        return '<Group {} / Code : {} / Value : {}>'.format(self.group_code, self.code, self.code_value)
+        return '<Group {} / Code : {} / Value : {} / DC : {}>'.format(self.group_code, self.code, self.code_value, self.code_desc)
 
     @staticmethod
-    def get_objects_from_code_value(code_value):
-        return CommonCode.query.filter_by(code_value=code_value)
+    def get_object_from_code(code):
+        ## code 필드가 유니크라는 전제
+        return CommonCode.query.filter_by(code=code).first()
     
+    ## 지역 코드그룹에서 표준코드(00, 11 등)으로 객체 가져오기
+    @staticmethod
+    def get_area_from_value(code_value):
+        return CommonCode.query.filter_by(group_code=area_group_code, code_value=code_value).first()
+ 
+    ## 모든 지역 가져오기
+    @staticmethod
+    def get_all_areas():
+        return CommonCode.query.filter_by(group_code=area_group_code).all()

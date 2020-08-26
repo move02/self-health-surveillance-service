@@ -103,6 +103,9 @@ else:
     raise EnvironmentError
 
 from app.models.admin_models import *
+from app.models.common_models import *
+from app.models.user.placeInfo import *
+from app.models.user.userInfo import *
 from app import admin_views
 from app import userViews
 from app import utils

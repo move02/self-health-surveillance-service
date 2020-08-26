@@ -20,7 +20,7 @@
                             <select class="form-control" id="input-area-1" name="input-area-1">
                                 <option selected value="">--선택--</option>
                                 {% for area in areas %}
-                                <option value="{{ area.code }}">{{ area.code_value }}</option>
+                                <option value="{{ area.code_value }}">{{ area.code_desc }}</option>
                                 {% endfor %}
                             </select>
                         </div>

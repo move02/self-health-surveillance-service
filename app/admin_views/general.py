@@ -38,3 +38,12 @@ def format_datetime(value, format='basic'):
             return value.strftime(format)
     else:
         return ""
+
+
+@general_view.app_template_filter()
+def code_description(code):
+    code_object = CommonCode.get_object_from_code(code)
+    if code_object:
+        return code_object.code_desc
+    else:
+        return ""

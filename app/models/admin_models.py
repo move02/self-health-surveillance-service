@@ -18,7 +18,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env_code'))
 
 class Administrator(db.Model, SerializerMixin, UserMixin):
-    __tablename__="T_ADMIN_INFO_M01"
+    __tablename__="t_admin_info_m01"
     __table_args__={'mysql_collate': 'utf8_general_ci'}
 
     serialize_rules = ('-password_hash')
@@ -113,7 +113,6 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
         def wrapper(func):
             @wraps(func)
             def decorator(*args, **kwargs):
-                pdb.set_trace()
                 if len(args[-1]) > limit:
                     raise AssertionError("{} 필드 길이제한 : {}".format(args[1], limit))
                 return func(*args, **kwargs)
@@ -154,7 +153,7 @@ class Administrator(db.Model, SerializerMixin, UserMixin):
     @not_null
     @length(15)
     def validate_charge_area(self, key, charge_area):
-        area_group_code = os.environ.get("AREA_CODE_GROUP")
+        area_group_code = os.environ.get("AREA_GROUP_CODE")
         if CommonCode.query.filter_by(group_code=area_group_code, code=charge_area).count() < 1:
             raise AssertionError("There is no area code like {}.{}".format(area_group_code, charge_area))
 

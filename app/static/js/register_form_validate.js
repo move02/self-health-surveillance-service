@@ -63,10 +63,14 @@ function showMessage(jsonResult){
     }
 }
 
+function ajaxError(status){
+    console.log("Ajax Error raised. status : " + status);
+}
+
 // 아이디 중복체크
 $("#check-username-overlap").click(function(){
     let inputUsername = $("#input-username").val();
-    fetch("/admin/check/username", {
+    fetch("/admin/login/check/username", {
         headers: {
             "X-CSRFToken": csrf_token,
             "Content-type": "application/json"
@@ -82,7 +86,7 @@ $("#check-username-overlap").click(function(){
             showMessage(JSON.parse(json))
         }
     ).catch(error => {
-        ajaxError(response.status)
+        ajaxError(error)
     })
     // $.ajax({
     //     url:"/admin/check/username",
