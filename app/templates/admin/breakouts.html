@@ -5,7 +5,7 @@
     <li class="breadcrumb-item active">발생현황 조회</li>
 </ol>
 <div class="container">
-    <div id="search-bar" class="row dflex">
+    <form action="{{ url_for('main.breakouts') }}" method="GET" id="search-bar" class="row dflex form-inline">
         <div class="offset-5"></div>
         <div class="col-1">
             <div class="form-group">
@@ -22,9 +22,9 @@
             </div>
         </div>
         <div class="col">
-            <button class="btn btn-primary" id="search" type="button">조회</button>
+            <button class="btn btn-primary" id="search" type="submit">조회</button>
         </div>
-    </div>
+    </form>
     <table id="breakout-data" class="table">
         <thead class="thead-dark">
             <tr>
@@ -34,11 +34,9 @@
                 <th scope="col" colspan="5">분석결과 등급(단위 : 건)</th>
             </tr>
             <tr>
-                <th scope="col">매우 높음</th>
-                <th scope="col">높음</th>
-                <th scope="col">보통</th>
-                <th scope="col">낮음</th>
-                <th scope="col">매우 낮음</th>
+                {% for level in risk_levels %}
+                    <th scope="col">{{ risk_levels.code_dc }}</th>
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
@@ -52,56 +50,13 @@
                 <td>49건</td>
                 <td>20건</td>
             </tr>
+            {% for row in result %}
             <tr>
-                <th scope="row">충남</th>
-                <td>2020-07-02</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
+                <th scope="row">{{ row.resideArea }}</th>
+                <td>{{ row.registDate }}</td>
+                <td>{{ row.total }}</td>
             </tr>
-            <tr>
-                <th scope="row">충남</th>
-                <td>2020-07-01</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
-            </tr>
-            <tr>
-                <th scope="row">충남</th>
-                <td>2020-06-30</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
-            </tr>
-            <tr>
-                <th scope="row">충남</th>
-                <td>2020-06-29</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
-            </tr>
-            <tr>
-                <th scope="row">충남</th>
-                <td>2020-06-28</td>
-                <td>100</td>
-                <td>1건</td>
-                <td>10건</td>
-                <td>20건</td>
-                <td>49건</td>
-                <td>20건</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

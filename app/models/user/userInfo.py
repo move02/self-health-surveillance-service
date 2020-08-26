@@ -19,6 +19,8 @@ class userInfo(db.Model):
     agrde = db.Column('AGRDE', db.String(10))
     registDate = db.Column('REGIST_DATE', db.DateTime, default=datetime.now())
 
+    schedules = db.relationship("userSchdul", backref="user", lazy=True)
+
     def __init__(self, resideArea=None, sexdstn=None, telno=None, password=None, deleteAt=None, email=None, agrde=None):
         self.resideArea = resideArea
         self.sexdstn = sexdstn
@@ -43,9 +45,11 @@ class userSchdul(db.Model):
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     sn = db.Column('SN', db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    userSn = db.Column('USER_SN', db.Integer, ForeignKey(userInfo.sn))
+    userSn = db.Column('USER_SN', db.Integer, ForeignKey(userInfo.sn), nullable=False)
     stdde = db.Column('STDDE', db.DateTime, default=datetime.fromtimestamp(time.time()))
     registDate = db.Column('REGIST_DATE', db.DateTime, default=datetime.now())
+
+    locations = db.relationship("userLocation", backref="schedule", lazy=True)
 
     def __init__(self, userSn=None, stdde=None):
         self.userSn = userSn

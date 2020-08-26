@@ -8,17 +8,17 @@ let labelElement2 = `<label class="small mb-1" id="search-label2" for="input-sea
 
 let searchField1 = `
 <div class="input-group col" id="date-picker1" data-target-input="nearest">
-    <input type="{criteria}" class="form-control" name="input-search-date"/>
+    <input type="{criteria}" class="form-control" name="input-search-date1"/>
 </div>`;
 
 let searchField2 = `
 <div class="input-group col" id="date-picker2" data-target-input="nearest">
-    <input type="{criteria}" class="form-control" name="input-search-date"/>
+    <input type="{criteria}" class="form-control" name="input-search-date2"/>
 </div>`;
 
 let yearSearchField = `
 <div class="input-group col" id="date-picker1" data-target-input="nearest">
-    <select name="input-search-date" id="date-picker1" class="form-control">
+    <select name="input-search-date1" id="date-picker1" class="form-control">
         <option value="2019" selected>2019</option>
         <option value="2020">2020</option>
     </select>

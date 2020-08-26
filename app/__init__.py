@@ -27,6 +27,11 @@ login_manager = LoginManager()
 bcrypt = Bcrypt()
 sess = Session()
 
+area_group_code = os.environ.get("AREA_GROUP_CODE")
+sex_group_code = os.environ.get("SEX_GROUP_CODE")
+age_group_code = os.environ.get("AGE_GROUP_CODE")
+risk_group_code = os.environ.get("RISK_GROUP_CODE")
+
 from .admin_views.general import general_view
 from .admin_views.login import login_view
 from .admin_views.main import main_view
@@ -109,8 +114,3 @@ from app.models.user.userInfo import *
 from app import admin_views
 from app import userViews
 from app import utils
-
-area_group_code = os.environ.get("AREA_GROUP_CODE")
-sex_group_code = os.environ.get("SEX_GROUP_CODE")
-age_group_coode = os.environ.get("AGE_GROUP_CODE")
-risk_group_code = os.environ.get("RISK_GROUP_CODE")
